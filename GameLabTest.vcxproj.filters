@@ -16,6 +16,12 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{040d441c-6acf-4e28-b580-41e152401a14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Class Definitions">
+      <UniqueIdentifier>{338c8741-3a8e-4f7c-8ebc-fa46196ecb9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Classes">
+      <UniqueIdentifier>{b2be28e0-5ac0-4c80-ac2c-f718bb42a5d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -24,17 +30,17 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ElementArrayBuffer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Game Classes</Filter>
     </ClCompile>
     <ClCompile Include="VertexArray.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Source Files\Game Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,17 +56,17 @@
     <ClInclude Include="Libraries\include\KHR\khrplatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ElementArrayBuffer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Class Definitions</Filter>
     </ClInclude>
     <ClInclude Include="VertexArray.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Class Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Header Files\Class Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Class Definitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

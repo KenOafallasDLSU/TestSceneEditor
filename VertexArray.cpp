@@ -6,13 +6,18 @@ VertexArray::VertexArray()
 	glGenVertexArrays(1, &ID);
 }
 
+void VertexArray::linkAttrib(VertexBuffer& vertexBuffer, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset)
+{
+	vertexBuffer.bind();
+	glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
+	glEnableVertexAttribArray(layout);
+	vertexBuffer.unbind();
+}
+
 // Links a VertexBuffer to the VertexArray using a certain layout
 void VertexArray::linkVertexBuffer(VertexBuffer& vertexBuffer, GLuint layout)
 {
-	vertexBuffer.bind();
-	glVertexAttribPointer(layout, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(layout);
-	vertexBuffer.unbind();
+	linkAttrib(vertexBuffer, layout, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
 }
 
 void VertexArray::bind() const

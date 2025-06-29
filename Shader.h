@@ -20,5 +20,8 @@ class Shader
 
 		void activate() const;
 		void tearDown() const;
+
+	private:
+		void compileErrors(unsigned int shader, const char* type);
 };
 #endif
