@@ -2,20 +2,32 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
-// Vertex Shader source code
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-//Fragment Shader source code
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(0.2f, 0.2f, 0.2f, 1.0f);\n"
-"}\n\0";
+#include"Shader.h"
+#include"VertexArray.h"
+#include"VertexBuffer.h"
+#include"ElementArrayBuffer.h"
+
+GLfloat triangleVertices[] = {
+		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
+		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
+		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f,
+};
+
+GLfloat triforceVertices[] = {
+		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
+		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
+		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f,
+
+		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,
+		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,
+		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f,
+};
+
+GLuint indices[] = {
+	0, 3, 5,
+	3, 2, 4,
+	5, 4, 1
+};
 
 int main()
 {
@@ -37,73 +49,30 @@ int main()
 	gladLoadGL();
 	glViewport(0, 0, 800, 800);
 
-	// Create shaders
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	GLuint shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	Shader shaderProgram("default.vert", "default.frag");
 
 	// Create buffer
-	GLfloat vertices[] = {
-		-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-		0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-		0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f,
+	VertexArray vertexArray;
+	//VertexBuffer vertexBuffer(triangleVertices, sizeof(triangleVertices));
 
-		-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,
-		0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,
-		0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-	};
+	VertexBuffer vertexBuffer(triforceVertices, sizeof(triforceVertices));
+	ElementArrayBuffer elementArrayBuffer(indices, sizeof(indices));
 
-	GLuint indices[] = {
-		0, 3, 5,
-		3, 2, 4,
-		5, 4, 1
-	};
+	vertexArray.bind();
+	vertexArray.linkVertexBuffer(vertexBuffer, 0);
 
-	GLuint vertexArray;
-	GLuint vertexBuffer;
-	GLuint elementArrayBuffer;
-
-	glGenVertexArrays(1, &vertexArray);
-	glGenBuffers(1, &vertexBuffer);
-	glGenBuffers(1, &elementArrayBuffer);
-
-	glBindVertexArray(vertexArray);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glfwSwapBuffers(window);
+	vertexArray.unbind();
+	vertexBuffer.unbind();
+	elementArrayBuffer.unbind();
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(244.0 / 255.0, 194.0 / 255.0, 194.0 / 255.0, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shaderProgram);
-		glBindVertexArray(vertexArray);
+		shaderProgram.activate();
+		vertexArray.bind();
+
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);
@@ -112,10 +81,10 @@ int main()
 	}
 
 	// Tear Down
-	glDeleteVertexArrays(1, &vertexArray);
-	glDeleteBuffers(1, &vertexBuffer);
-	glDeleteBuffers(1, &elementArrayBuffer);
-	glDeleteProgram(shaderProgram);
+	vertexArray.tearDown();
+	vertexBuffer.tearDown();
+	elementArrayBuffer.tearDown();
+	shaderProgram.tearDown();
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
