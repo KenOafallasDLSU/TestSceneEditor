@@ -41,10 +41,11 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile)
 	compileErrors(fragmentShader, "FRAGMENT");
 
 	// Create Shader Program Object and get its reference
-	GLuint ID = glCreateProgram();
+	ID = glCreateProgram(); // Do not create new ID var, ID already exists as per header
 	glAttachShader(ID, vertexShader);
 	glAttachShader(ID, fragmentShader);
 	glLinkProgram(ID);
+	compileErrors(fragmentShader, "PROGRAM");
 
 	// Delete the now useless Vertex and Fragment Shader objects
 	glDeleteShader(vertexShader);

@@ -74,7 +74,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shaderProgram.activate();
-		glUniform1f(uniID, 2.5f);
+		glUniform1f(uniID, 0.2f);
 
 		vertexArray.bind();
 
