@@ -53,18 +53,17 @@ int main()
 
 	// Create buffer
 	VertexArray vertexArray;
-	//VertexBuffer vertexBuffer(triangleVertices, sizeof(triangleVertices));
+	vertexArray.bind();
 
 	VertexBuffer vertexBuffer(triforceVertices, sizeof(triforceVertices));
-	ElementArrayBuffer elementArrayBuffer(indices, sizeof(indices));
-
-	vertexArray.bind();
 	vertexArray.linkVertexBuffer(vertexBuffer, 0);
+
+	ElementArrayBuffer elementArrayBuffer(indices, sizeof(indices));
 
 	vertexArray.unbind();
 	vertexBuffer.unbind();
 	elementArrayBuffer.unbind();
-
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(244.0 / 255.0, 194.0 / 255.0, 194.0 / 255.0, 1.0f);
