@@ -134,8 +134,8 @@ int main()
 	lightVB.unbind();
 	lightEAB.unbind();
 
-	//glm::vec4 lightColor = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
-    glm::vec4 lightColor = glm::vec4(244.0 / 255.0, 194.0 / 255.0, 194.0 / 255.0, 1.0f);
+	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    //glm::vec4 lightColor = glm::vec4(244.0 / 255.0, 194.0 / 255.0, 194.0 / 255.0, 1.0f);
     glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
@@ -153,8 +153,12 @@ int main()
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
-	Texture texture("kotone256px.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    //Texture
+	Texture texture("kotone256px.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 	texture.texUnit(shaderProgram, "tex0", 0);
+
+    Texture specMap("planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
+    texture.texUnit(shaderProgram, "tex1", 1);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -173,6 +177,7 @@ int main()
 		camera.initMatrix(shaderProgram, "camMatrix");
 
 		texture.bind();
+        specMap.bind();
 		vertexArray.bind();
 
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
