@@ -122,7 +122,7 @@ int main()
     //vertex uniforms
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
 
-    //fragment unifforms
+    //fragment uniforms
 	glUniform4f(glGetUniformLocation(lightShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 
 	shaderProgram.activate();
@@ -144,7 +144,7 @@ int main()
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
         kotonyd.draw(shaderProgram, camera);
-        light.draw(shaderProgram, camera);
+        light.draw(lightShader, camera);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
