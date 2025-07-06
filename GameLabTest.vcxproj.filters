@@ -54,6 +54,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Game Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Game Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\include\glad\glad.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files\Class Definitions</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
+      <Filter>Header Files\Class Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
       <Filter>Header Files\Class Definitions</Filter>
     </ClInclude>
   </ItemGroup>

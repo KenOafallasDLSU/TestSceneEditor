@@ -2,6 +2,7 @@
 #define ELEMENTARRAYBUFFER_CLASS_H
 
 #include<glad/glad.h>
+#include<vector>
 
 class ElementArrayBuffer
 {
@@ -9,7 +10,7 @@ class ElementArrayBuffer
 		GLuint ID;
 
 		// Constructor that generates a Elements Buffer Object and links it to indices
-		ElementArrayBuffer(GLuint* indices, GLsizeiptr size);
+		ElementArrayBuffer(std::vector<GLuint>& indices);
 
 		void bind();
 		void unbind();

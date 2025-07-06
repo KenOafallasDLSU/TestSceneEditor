@@ -7,8 +7,8 @@ in vec2 texCoord;
 in vec3 Normal;
 in vec3 currentPos;
 
-uniform sampler2D tex0;
-uniform sampler2D tex1;
+uniform sampler2D diffuse0;
+uniform sampler2D specular0;
 
 uniform vec4 lightColor;
 uniform vec3 lightPos;
@@ -37,8 +37,8 @@ vec4 pointLight()
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 10);
 	float specular = specAmount * specularLight;
 
-    vec4 baseLight = texture(tex0, texCoord) * (diffuse * intensity + ambient);
-    float specLight = texture(tex1, texCoord).r * specular * intensity;
+    vec4 baseLight = texture(diffuse0, texCoord) * (diffuse * intensity + ambient);
+    float specLight = texture(specular0, texCoord).r * specular * intensity;
 
     return (baseLight + specLight) * lightColor;
 }
@@ -60,8 +60,8 @@ vec4 directionalLight()
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 10);
 	float specular = specAmount * specularLight;
 
-    vec4 baseLight = texture(tex0, texCoord) * (diffuse + ambient);
-    float specLight = texture(tex1, texCoord).r * specular;
+    vec4 baseLight = texture(diffuse0, texCoord) * (diffuse + ambient);
+    float specLight = texture(specular0, texCoord).r * specular;
 
     return (baseLight + specLight) * lightColor;
 }
@@ -91,8 +91,8 @@ vec4 spotLight()
     float angle = dot(vec3(0.0f, -1.0f, 0.0f), -lightDirection);
     float intensity = clamp((angle - outerCone) / (innerCone - outerCone), 0.0f, 1.0f);
 
-    vec4 baseLight = texture(tex0, texCoord) * (diffuse * intensity + ambient);
-    float specLight = texture(tex1, texCoord).r * specular * intensity;
+    vec4 baseLight = texture(diffuse0, texCoord) * (diffuse * intensity + ambient);
+    float specLight = texture(specular0, texCoord).r * specular * intensity;
 
     return (baseLight + specLight) * lightColor;
 }

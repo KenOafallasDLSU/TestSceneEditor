@@ -1,45 +1,32 @@
-#include<iostream>
-#include<glad/glad.h>
-#include<GLFW/glfw3.h>
-#include<stb/stb_image.h>
-#include<glm/glm.hpp>
-#include<glm/gtc/matrix_transform.hpp>
-#include<glm/gtc/type_ptr.hpp>
-
-#include"Shader.h"
-#include"VertexArray.h"
-#include"VertexBuffer.h"
-#include"ElementArrayBuffer.h"
-#include"Texture.h"
-#include"Camera.h"
+#include"Mesh.h"
 
 int main()
 {
 	// Vertices coordinates
 
-	GLfloat vertices[] =
-	{ //     COORDINATES     /        COLORS          /    TexCoord   /        NORMALS       //
-		-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,      0.0f, -1.0f, 0.0f, // Bottom side
-		-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 5.0f,      0.0f, -1.0f, 0.0f, // Bottom side
-		 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 5.0f,      0.0f, -1.0f, 0.0f, // Bottom side
-		 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+    Vertex vertices[] =
+    { //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
+        Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+        Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 5.0f)},
+        Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(5.0f, 5.0f)},
+        Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(5.0f, 0.0f)},
 
-		-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,     -0.8f, 0.5f,  0.0f, // Left Side
-		-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,     -0.8f, 0.5f,  0.0f, // Left Side
-		 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,     -0.8f, 0.5f,  0.0f, // Left Side
+        Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(-0.8f, 0.5f,  0.0f), glm::vec2(0.0f, 0.0f)},
+        Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(-0.8f, 0.5f,  0.0f), glm::vec2(5.0f, 0.0f)},
+        Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec3(-0.8f, 0.5f,  0.0f), glm::vec2(2.5f, 5.0f)},
 
-		-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
-		 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
-		 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
+        Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, 0.5f, -0.8f), glm::vec2(5.0f, 0.0f)},
+        Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, 0.5f, -0.8f), glm::vec2(0.0f, 0.0f)},
+        Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec3(0.0f, 0.5f, -0.8f), glm::vec2(2.5f, 5.0f)},
 
-		 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,      0.8f, 0.5f,  0.0f, // Right side
-		 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.8f, 0.5f,  0.0f, // Right side
-		 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.8f, 0.5f,  0.0f, // Right side
+        Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.8f, 0.5f,  0.0f), glm::vec2(0.0f, 0.0f)},
+        Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.8f, 0.5f,  0.0f), glm::vec2(5.0f, 0.0f)},
+        Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec3(0.8f, 0.5f,  0.0f), glm::vec2(2.5f, 5.0f)},
 
-		 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, 0.5f,  0.8f, // Facing side
-		-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,      0.0f, 0.5f,  0.8f, // Facing side
-		 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.0f, 0.5f,  0.8f  // Facing side
-	};
+        Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, 0.5f,  0.8f), glm::vec2(5.0f, 0.0f)},
+        Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, 0.5f,  0.8f), glm::vec2(0.0f, 0.0f)},
+        Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec3(0.0f, 0.5f,  0.8f), glm::vec2(2.5f, 5.0f)},
+    };
 
 	GLuint indices[] =
 	{
@@ -51,17 +38,17 @@ int main()
 		13, 15, 14 // Facing side
 	};
 
-	GLfloat lightVertices[] =
-	{ //     COORDINATES     //
-		-0.1f, -0.1f,  0.1f,
-		-0.1f, -0.1f, -0.1f,
-		 0.1f, -0.1f, -0.1f,
-		 0.1f, -0.1f,  0.1f,
-		-0.1f,  0.1f,  0.1f,
-		-0.1f,  0.1f, -0.1f,
-		 0.1f,  0.1f, -0.1f,
-		 0.1f,  0.1f,  0.1f
-	};
+    Vertex lightVertices[] =
+    { //     COORDINATES     //
+        Vertex{glm::vec3(-0.1f, -0.1f,  0.1f)},
+        Vertex{glm::vec3(-0.1f, -0.1f, -0.1f)},
+        Vertex{glm::vec3(0.1f, -0.1f, -0.1f)},
+        Vertex{glm::vec3(0.1f, -0.1f,  0.1f)},
+        Vertex{glm::vec3(-0.1f,  0.1f,  0.1f)},
+        Vertex{glm::vec3(-0.1f,  0.1f, -0.1f)},
+        Vertex{glm::vec3(0.1f,  0.1f, -0.1f)},
+        Vertex{glm::vec3(0.1f,  0.1f,  0.1f)}
+    };
 
 	GLuint lightIndices[] =
 	{
@@ -98,41 +85,32 @@ int main()
 	glfwMakeContextCurrent(window);
 
 	gladLoadGL();
+    // Enables the Depth Buffer
+    glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, width, height);
 
+    Texture textures[]
+    {
+        Texture("kotone256px.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+        Texture("planksSpec.png", "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
+    };
+
+    // Test Pyramid Object
 	Shader shaderProgram("default.vert", "default.frag");
+    std::vector <Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
+    std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
+    std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
+    Mesh kotonyd(verts, ind, tex);
 
-	// Create buffer
-	VertexArray vertexArray;
-	// VA must be bound before VB and EB are made
-	vertexArray.bind();
-
-	VertexBuffer vertexBuffer(vertices, sizeof(vertices));
-	ElementArrayBuffer elementArrayBuffer(indices, sizeof(indices));
-
-	vertexArray.linkAttrib(vertexBuffer, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
-	vertexArray.linkAttrib(vertexBuffer, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
-	vertexArray.linkAttrib(vertexBuffer, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
-	vertexArray.linkAttrib(vertexBuffer, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
-
-	vertexArray.unbind();
-	vertexBuffer.unbind();
-	elementArrayBuffer.unbind();
-
-	// Light
+	// Light Object
 	Shader lightShader("light.vert", "light.frag");
-	
-	VertexArray lightVA;
-	lightVA.bind();
+    std::vector <Vertex> lightVerts(lightVertices, lightVertices + sizeof(lightVertices) / sizeof(Vertex));
+    std::vector <GLuint> lightInd(lightIndices, lightIndices + sizeof(lightIndices) / sizeof(GLuint));
+    Mesh light(lightVerts, lightInd, tex);
 
-	VertexBuffer lightVB(lightVertices, sizeof(lightVertices));
-	ElementArrayBuffer lightEAB(lightIndices, sizeof(lightIndices));
-
-	lightVA.linkAttrib(lightVB, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-
-	lightVA.unbind();
-	lightVB.unbind();
-	lightEAB.unbind();
+    glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::mat4 pyramidModel = glm::mat4(1.0f);
+    pyramidModel = glm::translate(pyramidModel, pyramidPos);
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
     //glm::vec4 lightColor = glm::vec4(244.0 / 255.0, 194.0 / 255.0, 194.0 / 255.0, 1.0f);
@@ -140,27 +118,20 @@ int main()
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
 
-	glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::mat4 pyramidModel = glm::mat4(1.0f);
-	pyramidModel = glm::translate(pyramidModel, pyramidPos);
-
-
 	lightShader.activate();
+    //vertex uniforms
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
+
+    //fragment unifforms
 	glUniform4f(glGetUniformLocation(lightShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+
 	shaderProgram.activate();
+    //vertex uniforms
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
+
+    //fragment uniforms
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
-    //Texture
-	Texture texture("kotone256px.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
-	texture.texUnit(shaderProgram, "tex0", 0);
-
-    Texture specMap("planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
-    texture.texUnit(shaderProgram, "tex1", 1);
-
-	glEnable(GL_DEPTH_TEST);
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
@@ -172,37 +143,16 @@ int main()
 		camera.inputs(window);
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
-        shaderProgram.activate();
-        glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-		camera.initMatrix(shaderProgram, "camMatrix");
+        kotonyd.draw(shaderProgram, camera);
+        light.draw(shaderProgram, camera);
 
-		texture.bind();
-        specMap.bind();
-		vertexArray.bind();
-
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
-		
-		// Tells OpenGL which Shader Program we want to use
-		lightShader.activate();
-		// Export the camMatrix to the Vertex Shader of the light cube
-		camera.initMatrix(lightShader, "camMatrix");
-		// Bind the VAO so OpenGL knows to use it
-		lightVA.bind();
-		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
-		
 		glfwSwapBuffers(window);
-
 		glfwPollEvents();
 	}
 
 	// Tear Down
-	texture.tearDown();
-	vertexArray.tearDown();
-	vertexBuffer.tearDown();
-	elementArrayBuffer.tearDown();
 	shaderProgram.tearDown();
+    lightShader.tearDown();
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
