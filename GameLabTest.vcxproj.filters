@@ -16,14 +16,23 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{040d441c-6acf-4e28-b580-41e152401a14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Class Definitions">
-      <UniqueIdentifier>{338c8741-3a8e-4f7c-8ebc-fa46196ecb9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Game Classes">
-      <UniqueIdentifier>{b2be28e0-5ac0-4c80-ac2c-f718bb42a5d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{f2e9e27f-ad03-4c49-bc3d-dadd5783bb1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderer">
+      <UniqueIdentifier>{b2be28e0-5ac0-4c80-ac2c-f718bb42a5d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{49cd54ec-6451-456c-ac56-06cce0575fae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer">
+      <UniqueIdentifier>{338c8741-3a8e-4f7c-8ebc-fa46196ecb9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{ca085202-0654-49ab-b9de-603d463d9d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app">
+      <UniqueIdentifier>{a24cb565-a83e-4d2e-b1ca-d6c81b7f1686}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,28 +43,34 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ElementArrayBuffer.cpp">
-      <Filter>Source Files\Game Classes</Filter>
+      <Filter>Source Files\renderer</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Game Classes</Filter>
+      <Filter>Source Files\renderer</Filter>
     </ClCompile>
     <ClCompile Include="VertexArray.cpp">
-      <Filter>Source Files\Game Classes</Filter>
+      <Filter>Source Files\renderer</Filter>
     </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Source Files\Game Classes</Filter>
+      <Filter>Source Files\renderer</Filter>
     </ClCompile>
     <ClCompile Include="stb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Game Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Game Classes</Filter>
+      <Filter>Source Files\renderer</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Game Classes</Filter>
+      <Filter>Source Files\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_gltf_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEditor.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,28 +87,31 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ElementArrayBuffer.h">
-      <Filter>Header Files\Class Definitions</Filter>
+      <Filter>Header Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="VertexArray.h">
-      <Filter>Header Files\Class Definitions</Filter>
+      <Filter>Header Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>Header Files\Class Definitions</Filter>
+      <Filter>Header Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Header Files\Class Definitions</Filter>
+      <Filter>Header Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\include\stb\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Header Files\Class Definitions</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Class Definitions</Filter>
+      <Filter>Header Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Header Files\Class Definitions</Filter>
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEditor.h">
+      <Filter>Header Files\app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,6 @@
 #include"Mesh.h"
+#include"SceneEditor.h"
+#include<tiny_gltf/tiny_gltf.h>
 
 int main()
 {
@@ -65,6 +67,11 @@ int main()
 		4, 5, 6,
 		4, 6, 7
 	};
+
+    SceneEditor sceneEditor("models/bunny/scene.gltf");
+    sceneEditor.run();
+
+    tinygltf::Model model;
 
 	const unsigned int width = 800;
 	const unsigned int height = 800;
