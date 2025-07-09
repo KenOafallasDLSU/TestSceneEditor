@@ -1,5 +1,4 @@
-#ifndef VERTEXBUFFER_CLASS_H
-#define VERTEXBUFFER_CLASS_H
+#pragma once
 
 #include<glm/glm.hpp>
 #include<glad/glad.h>
@@ -25,5 +24,3 @@ class VertexBuffer
 		void unbind() const;
 		void tearDown() const;
 };
-
-#endif

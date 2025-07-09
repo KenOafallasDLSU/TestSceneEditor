@@ -1,5 +1,4 @@
-#ifndef ELEMENTARRAYBUFFER_CLASS_H
-#define ELEMENTARRAYBUFFER_CLASS_H
+#pragma once
 
 #include<glad/glad.h>
 #include<vector>
@@ -16,5 +15,3 @@ class ElementArrayBuffer
 		void unbind();
 		void tearDown();
 };
-
-#endif

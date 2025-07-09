@@ -1,5 +1,4 @@
-#ifndef CAMERA_CLASS_H
-#define CAMERA_CLASS_H
+#pragma once
 
 #define GLM_ENABLE_EXPERIMENTAL
 
@@ -43,5 +42,3 @@ class Camera
 		// Handles camera inputs
 		void inputs(GLFWwindow* window);
 };
-
-#endif

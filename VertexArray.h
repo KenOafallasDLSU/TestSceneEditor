@@ -1,5 +1,4 @@
-#ifndef VERTEXARRAY_CLASS_H
-#define VERTEXARRAY_CLASS_H
+#pragma once
 
 #include<glad/glad.h>
 #include"VertexBuffer.h"
@@ -18,4 +17,3 @@ class VertexArray
 		void unbind() const;
 		void tearDown() const;
 };
-#endif

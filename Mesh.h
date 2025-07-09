@@ -1,5 +1,4 @@
-#ifndef MESH_CLASS_H
-#define MESH_CLASS_H
+#pragma once
 
 #include<string>
 
@@ -23,4 +22,3 @@ public:
     // Draws the mesh
     void draw(Shader& shader, Camera& camera);
 };
-#endif
