@@ -6,6 +6,11 @@ int main()
 {
 	// Vertices coordinates
 
+    //SceneEditor sceneEditor("models/grindstone/scene.gltf");
+    SceneEditor sceneEditor("models/main_sponza/NewSponza_Main_glTF_003.gltf");
+    sceneEditor.run();
+
+    /*
     Vertex vertices[] =
     { //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
         Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
@@ -68,9 +73,6 @@ int main()
 		4, 6, 7
 	};
 
-    SceneEditor sceneEditor("models/bunny/scene.gltf");
-    sceneEditor.run();
-
     tinygltf::Model model;
 
 	const unsigned int width = 800;
@@ -78,8 +80,8 @@ int main()
 
 	glfwInit();
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(width, height, "KenSceneEditor", NULL, NULL);
@@ -95,6 +97,8 @@ int main()
     // Enables the Depth Buffer
     glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, width, height);
+
+    
 
     Texture textures[]
     {
@@ -163,6 +167,7 @@ int main()
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
+    */
 
 	return 0;
 }

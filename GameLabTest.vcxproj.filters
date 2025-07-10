@@ -72,6 +72,9 @@
     <ClCompile Include="SceneEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gltf.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\include\glad\glad.h">
@@ -113,6 +116,15 @@
     <ClInclude Include="SceneEditor.h">
       <Filter>Header Files\app</Filter>
     </ClInclude>
+    <ClInclude Include="gltf.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFWHandler.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders.hpp">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="default.vert">
@@ -125,6 +137,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="light.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="pbr.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="forward.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

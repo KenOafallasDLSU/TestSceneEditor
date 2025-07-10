@@ -138,6 +138,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ElementArrayBuffer.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="gltf.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SceneEditor.cpp" />
@@ -151,6 +152,8 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ElementArrayBuffer.h" />
+    <ClInclude Include="GLFWHandler.hpp" />
+    <ClInclude Include="gltf.h" />
     <ClInclude Include="Libraries\include\glad\glad.h" />
     <ClInclude Include="Libraries\include\GLFW\glfw3.h" />
     <ClInclude Include="Libraries\include\GLFW\glfw3native.h" />
@@ -159,6 +162,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SceneEditor.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="shaders.hpp" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
@@ -166,8 +170,10 @@
   <ItemGroup>
     <None Include="default.frag" />
     <None Include="default.vert" />
+    <None Include="forward.vert" />
     <None Include="light.frag" />
     <None Include="light.vert" />
+    <None Include="pbr.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Kotone256px.png" />
