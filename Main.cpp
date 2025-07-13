@@ -4,6 +4,7 @@
 
 #include"Cube.hpp"
 #include"Plane.hpp"
+#include"Sphere.hpp"
 
 int main()
 {
@@ -51,6 +52,11 @@ int main()
     Plane plane(tex);
     plane.setPosition(glm::vec3(0, -5, 0));
     scene.push_back(plane);
+
+    Sphere sphere(tex);
+    sphere.setPosition(glm::vec3(0, 0, 0));
+    sphere.setScale(glm::vec3(3, 3, 3));
+    scene.push_back(sphere);
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 

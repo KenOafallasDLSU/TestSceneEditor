@@ -84,7 +84,7 @@
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files\renderer\primitives</Filter>
     </ClCompile>
-    <ClCompile Include="Cylinder.cpp">
+    <ClCompile Include="Sphere.cpp">
       <Filter>Source Files\renderer\primitives</Filter>
     </ClCompile>
     <ClCompile Include="Plane.cpp">
@@ -150,6 +150,9 @@
       <Filter>Header Files\renderer\primitives</Filter>
     </ClInclude>
     <ClInclude Include="Plane.hpp">
+      <Filter>Header Files\renderer\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.hpp">
       <Filter>Header Files\renderer\primitives</Filter>
     </ClInclude>
   </ItemGroup>

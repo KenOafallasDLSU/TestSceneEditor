@@ -137,7 +137,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="ElementArrayBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="gltf.cpp" />
@@ -170,6 +170,7 @@
     <ClInclude Include="SceneEditor.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="shaders.hpp" />
+    <ClInclude Include="Sphere.hpp" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
