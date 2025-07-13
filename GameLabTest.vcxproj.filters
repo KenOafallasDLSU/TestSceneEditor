@@ -180,5 +180,11 @@
     <Image Include="Kotone256px.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
+    <Image Include="default.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="planksSpec.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>
