@@ -27,8 +27,8 @@ public:
     std::vector <glm::vec2> m_textureVerts;
     std::vector <Face> m_faces;
 
-    std::vector <Texture> textures;
-    std::vector <GLuint> indices;
+    std::vector <Texture> m_textures;
+    std::vector <GLuint> m_indices;
 
     // Store VAO in public so it can be used in the Draw function
     VertexArray vertexArray;
@@ -39,4 +39,5 @@ public:
 
     // Draws the mesh
     void draw(Shader& shader, Camera& camera);
+    void setTextures(std::vector <Texture>& textures);
 };

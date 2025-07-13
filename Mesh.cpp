@@ -4,7 +4,7 @@ Mesh::Mesh() { }
 
 void Mesh::init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures)
 {
-    Mesh::textures = textures;
+    m_textures = textures;
 
     // VA must be bound before VB and EB are made
     vertexArray.bind();
@@ -34,20 +34,20 @@ void Mesh::init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& no
             }
 
             if (presentIndex >= 0) {
-                indices.push_back(presentIndex);
+                m_indices.push_back(presentIndex);
             }
             else {
                 vertices.push_back(newVertex);
-                indices.push_back(vertices.size() - 1);
+                m_indices.push_back(vertices.size() - 1);
             }
         }
     }
 
     std::cout << "Created Vertices: " << vertices.size() << std::endl;
-    std::cout << "Created Indices: " << indices.size() << std::endl;
+    std::cout << "Created Indices: " << m_indices.size() << std::endl;
    
     VertexBuffer vertexBuffer(vertices);
-    ElementArrayBuffer elementArrayBuffer(Mesh::indices);
+    ElementArrayBuffer elementArrayBuffer(m_indices);
 
     vertexArray.linkAttrib(vertexBuffer, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
     vertexArray.linkAttrib(vertexBuffer, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
@@ -67,10 +67,10 @@ void Mesh::draw(Shader& shader, Camera& camera)
     unsigned int numDiffuse = 0;
     unsigned int numSpecular = 0;
 
-    for (unsigned int i = 0; i < textures.size(); i++)
+    for (unsigned int i = 0; i < m_textures.size(); i++)
     {
         std::string num;
-        std::string type = textures[i].type;
+        std::string type = m_textures[i].type;
         if (type == "diffuse")
         {
             num = std::to_string(numDiffuse++);
@@ -79,8 +79,8 @@ void Mesh::draw(Shader& shader, Camera& camera)
         {
             num = std::to_string(numSpecular++);
         }
-        textures[i].texUnit(shader, (type + num).c_str(), i);
-        textures[i].bind();
+        m_textures[i].texUnit(shader, (type + num).c_str(), i);
+        m_textures[i].bind();
     }
 
     // Take care of the camera Matrix
@@ -88,5 +88,10 @@ void Mesh::draw(Shader& shader, Camera& camera)
     camera.initMatrix(shader, "camMatrix");
 
     // Draw the actual mesh
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
+}
+
+void Mesh::setTextures(std::vector <Texture>& textures)
+{
+    m_textures = textures;
 }
