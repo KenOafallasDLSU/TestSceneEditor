@@ -1,21 +1,52 @@
 #include"Mesh.h"
 
-Mesh::Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::vector <Texture>& textures)
+Mesh::Mesh(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures)
 {
-    Mesh::vertices = vertices;
-    Mesh::indices = indices;
     Mesh::textures = textures;
 
     // VA must be bound before VB and EB are made
     vertexArray.bind();
+
+    std::vector <Vertex> vertices;
+    for (Face face : faces)
+    {
+        for (FaceIndex faceIndex : face.faceIndices)
+        {
+            int presentIndex = -1;
+            
+            Vertex newVertex{};
+            newVertex.position = shapeVerts[faceIndex.shapeInd - 1];
+            newVertex.normal = normalVerts[faceIndex.normalInd - 1];
+            newVertex.texUV = textureVerts[faceIndex.textureInd - 1];
+            vertices.push_back(newVertex);
+
+            for (int i = 0; i < vertices.size(); i++) {
+                const Vertex vertex = vertices[i];
+                if (glm::all(glm::equal(vertex.normal, newVertex.normal)) &&
+                    glm::all(glm::equal(vertex.position, newVertex.position)) &&
+                    glm::all(glm::equal(vertex.texUV, newVertex.texUV)))
+                {
+                    presentIndex = i;
+                    break;
+                }
+            }
+
+            if (presentIndex >= 0) {
+                indices.push_back(presentIndex);
+            }
+            else {
+                vertices.push_back(newVertex);
+                indices.push_back(vertices.size() - 1);
+            }
+        }
+    }
    
     VertexBuffer vertexBuffer(vertices);
-    ElementArrayBuffer elementArrayBuffer(indices);
+    ElementArrayBuffer elementArrayBuffer(Mesh::indices);
 
     vertexArray.linkAttrib(vertexBuffer, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
     vertexArray.linkAttrib(vertexBuffer, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
-    vertexArray.linkAttrib(vertexBuffer, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
-    vertexArray.linkAttrib(vertexBuffer, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
+    vertexArray.linkAttrib(vertexBuffer, 2, 2, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
 
     vertexArray.unbind();
     vertexBuffer.unbind();

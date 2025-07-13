@@ -23,7 +23,7 @@ vec4 pointLight()
     float intensity = 1.0f / ((a * dist * dist) + (b * dist) + 1.0f);
 
     // ambient light
-    float ambient = 0.15f;
+    float ambient = 0.45f;
 
     // diffuse light
     vec3 normal = normalize(Normal);

@@ -34,6 +34,12 @@
     <Filter Include="Header Files\app">
       <UniqueIdentifier>{a24cb565-a83e-4d2e-b1ca-d6c81b7f1686}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\renderer\primitives">
+      <UniqueIdentifier>{e8c1ce52-ee23-4dd4-a9e9-6e316c73eed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer\primitives">
+      <UniqueIdentifier>{9eab6f44-1de8-4b84-be15-45235a0d12a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -74,6 +80,18 @@
     </ClCompile>
     <ClCompile Include="gltf.cpp">
       <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Source Files\renderer\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>Source Files\renderer\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Source Files\renderer\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\renderer\primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="shaders.hpp">
       <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.hpp">
+      <Filter>Header Files\renderer\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.hpp">
+      <Filter>Header Files\renderer\primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
