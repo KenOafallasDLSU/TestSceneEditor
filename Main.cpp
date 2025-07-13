@@ -49,6 +49,10 @@ int main()
     std::vector <Object> scene;
     std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
 
+    Cube cube(tex);
+    cube.setScale(glm::vec3(10, 1.5, 5));
+    scene.push_back(cube);
+
     Plane plane(tex);
     plane.setPosition(glm::vec3(0, -5, 0));
     scene.push_back(plane);
@@ -73,13 +77,13 @@ int main()
             object.draw(camera);
         }
 
-        if (scene.size() < 10) {
+        /*if (scene.size() < 10) {
             Cube newCube(tex);
             newCube.setPosition(glm::vec3((float)scene.size(), 0.0f, 0.0f));
             newCube.setRotation(glm::vec3((float)scene.size() * 12.0f, 0.0f, 0.0f));
             newCube.setScale(glm::vec3(1.0f, 1.0f, 1.0f + (float)scene.size() * 0.5f));
             scene.push_back(newCube);
-        }
+        }*/
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

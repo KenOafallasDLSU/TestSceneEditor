@@ -1,6 +1,8 @@
 #include"Mesh.h"
 
-Mesh::Mesh(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures)
+Mesh::Mesh() { }
+
+void Mesh::init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures)
 {
     Mesh::textures = textures;
 

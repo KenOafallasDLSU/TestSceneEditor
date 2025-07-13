@@ -1,19 +1,7 @@
 #include"Sphere.hpp"
 
-struct SphereProperties {
-    std::vector <glm::vec3> sphere_verts;
-    std::vector <glm::vec2> sphere_texCoords;
-    std::vector <glm::vec3> sphere_normals;
-    std::vector <Face> sphere_faces;
-};
-
-SphereProperties buildVerticesSmooth()
+void Sphere::buildVerticesSmooth()
 {
-    std::vector <glm::vec3> sphere_verts;
-    std::vector <glm::vec2> sphere_texCoords;
-    std::vector <glm::vec3> sphere_normals;
-    std::vector <Face> sphere_faces;
-
     const float PI = acos(-1.0f);
     const float radius = 1.0f;
     const float sectorCount = 36.0f;
@@ -94,19 +82,11 @@ SphereProperties buildVerticesSmooth()
             }
         }
     }
-
-    return SphereProperties{
-        sphere_verts,
-        sphere_texCoords,
-        sphere_normals,
-        sphere_faces
-    };
 }
 
-SphereProperties sphereProperties = buildVerticesSmooth();
-
-Sphere::Sphere(std::vector <Texture>& textures) :
-    Object(sphereProperties.sphere_verts, sphereProperties.sphere_normals, sphereProperties.sphere_texCoords, sphereProperties.sphere_faces, textures)
+Sphere::Sphere(std::vector <Texture>& textures)
 {
     std::cout << "Creating Sphere" << std::endl;
+    buildVerticesSmooth();
+    init(sphere_verts, sphere_normals, sphere_texCoords, sphere_faces, textures);
 }

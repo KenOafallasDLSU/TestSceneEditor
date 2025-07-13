@@ -33,8 +33,9 @@ public:
     // Store VAO in public so it can be used in the Draw function
     VertexArray vertexArray;
 
-    // Initializes the mesh
-    Mesh(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures);
+    Mesh();
+
+    void init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures);
 
     // Draws the mesh
     void draw(Shader& shader, Camera& camera);

@@ -1,10 +1,11 @@
 #include"Object.hpp"
 
-Object::Object(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures) :
-    shader("default.vert", "default.frag"),
-    mesh(shapeVerts, normalVerts, textureVerts, faces, textures)
+Object::Object() : shader("default.vert", "default.frag") { }
+
+void Object::init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures)
 {
-    Object::textures = textures;
+    mesh.init(shapeVerts, normalVerts, textureVerts, faces, textures);
+    Object::m_textures = textures;
 
     std::cout << "Creating Object" << std::endl;
 
@@ -48,4 +49,9 @@ void Object::transform()
     model = glm::rotate(model, glm::radians(m_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::translate(model, m_position);
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+}
+
+void Object::setTextures(std::vector <Texture>& textures)
+{
+    m_textures = textures;
 }
