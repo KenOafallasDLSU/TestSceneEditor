@@ -149,6 +149,9 @@
     <ClInclude Include="Object.hpp">
       <Filter>Header Files\renderer\primitives</Filter>
     </ClInclude>
+    <ClInclude Include="Plane.hpp">
+      <Filter>Header Files\renderer\primitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="default.vert">

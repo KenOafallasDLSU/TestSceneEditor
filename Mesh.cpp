@@ -18,10 +18,10 @@ Mesh::Mesh(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalV
             newVertex.position = shapeVerts[faceIndex.shapeInd - 1];
             newVertex.normal = normalVerts[faceIndex.normalInd - 1];
             newVertex.texUV = textureVerts[faceIndex.textureInd - 1];
-            vertices.push_back(newVertex);
 
             for (int i = 0; i < vertices.size(); i++) {
                 const Vertex vertex = vertices[i];
+
                 if (glm::all(glm::equal(vertex.normal, newVertex.normal)) &&
                     glm::all(glm::equal(vertex.position, newVertex.position)) &&
                     glm::all(glm::equal(vertex.texUV, newVertex.texUV)))
@@ -40,6 +40,9 @@ Mesh::Mesh(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalV
             }
         }
     }
+
+    std::cout << "Created Vertices: " << vertices.size() << std::endl;
+    std::cout << "Created Indices: " << indices.size() << std::endl;
    
     VertexBuffer vertexBuffer(vertices);
     ElementArrayBuffer elementArrayBuffer(Mesh::indices);

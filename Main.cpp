@@ -3,6 +3,7 @@
 #include<tiny_gltf/tiny_gltf.h>
 
 #include"Cube.hpp"
+#include"Plane.hpp"
 
 int main()
 {
@@ -46,6 +47,10 @@ int main()
 
     std::vector <Object> scene;
     std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
+
+    Plane plane(tex);
+    plane.setPosition(glm::vec3(0, -5, 0));
+    scene.push_back(plane);
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
