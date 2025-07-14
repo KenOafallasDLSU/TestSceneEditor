@@ -180,10 +180,13 @@
     <Image Include="Kotone256px.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="default.png">
+    <Image Include="planksSpec.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="planksSpec.png">
+    <Image Include="brick.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Mocap512px.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>

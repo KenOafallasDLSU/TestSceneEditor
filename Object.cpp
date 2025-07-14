@@ -53,6 +53,6 @@ void Object::transform()
 
 void Object::setTextures(std::vector <Texture>& textures)
 {
-    m_textures = textures;
+    Object::m_textures = textures;
     mesh.setTextures(textures);
 }

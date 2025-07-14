@@ -67,10 +67,10 @@ void Mesh::draw(Shader& shader, Camera& camera)
     unsigned int numDiffuse = 0;
     unsigned int numSpecular = 0;
 
-    for (unsigned int i = 0; i < m_textures.size(); i++)
+    for (unsigned int i = 0; i < Mesh::m_textures.size(); i++)
     {
         std::string num;
-        std::string type = m_textures[i].type;
+        std::string type = Mesh::m_textures[i].type;
         if (type == "diffuse")
         {
             num = std::to_string(numDiffuse++);
@@ -79,8 +79,8 @@ void Mesh::draw(Shader& shader, Camera& camera)
         {
             num = std::to_string(numSpecular++);
         }
-        m_textures[i].texUnit(shader, (type + num).c_str(), i);
-        m_textures[i].bind();
+        Mesh::m_textures[i].texUnit(shader, (type + num).c_str(), i);
+        Mesh::m_textures[i].bind();
     }
 
     // Take care of the camera Matrix
@@ -93,5 +93,5 @@ void Mesh::draw(Shader& shader, Camera& camera)
 
 void Mesh::setTextures(std::vector <Texture>& textures)
 {
-    m_textures = textures;
+    Mesh::m_textures = textures;
 }

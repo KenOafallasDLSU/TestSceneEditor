@@ -39,30 +39,29 @@ int main()
     glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, width, height);
 
-    
-    Texture textures[]
-    {
-        Texture("kotone256px.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
-        Texture("planksSpec.png", "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
+    std::vector <Object> scene;
+    std::vector <Texture> defaultTex{
+        Texture("Mocap512px.png", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE)
     };
 
-    std::vector <Object> scene;
-    std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
-
-    Cube cube(tex);
-    cube.setScale(glm::vec3(10, 1.5, 5));
+    Cube cube(defaultTex);
     scene.push_back(cube);
+    scene[0].setScale(glm::vec3(10, 1.5, 5));
 
-    Plane plane(tex);
-    plane.setPosition(glm::vec3(0, -5, 0));
+    Plane plane(defaultTex);
     scene.push_back(plane);
+    scene[1].setPosition(glm::vec3(0, -5, 0));
 
-    Sphere sphere(tex);
-    sphere.setPosition(glm::vec3(0, 0, 0));
-    sphere.setScale(glm::vec3(3, 3, 3));
+    Sphere sphere(defaultTex);
     scene.push_back(sphere);
+    scene[2].setPosition(glm::vec3(3, 0, 0));
+    scene[2].setScale(glm::vec3(3, 3, 3));
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+
+    std::vector <Texture> brickTex{
+        Texture("brick.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+    };
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -84,6 +83,8 @@ int main()
             newCube.setScale(glm::vec3(1.0f, 1.0f, 1.0f + (float)scene.size() * 0.5f));
             scene.push_back(newCube);
         }*/
+
+        scene[0].setTextures(brickTex);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
