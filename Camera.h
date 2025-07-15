@@ -21,6 +21,7 @@ class Camera
 		glm::mat4 cameraMatrix = glm::mat4(1.0f);
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 projection = glm::mat4(1.0f);
+        glm::vec2 mouseAnchor;
 
 		// Prevents the camera from jumping around when first clicking left click
 		bool firstClick = true;

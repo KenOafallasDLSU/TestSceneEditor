@@ -43,11 +43,12 @@ void Object::transform()
 {
     shader.activate();
     glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, m_position);
     model = glm::scale(model, m_scale);
     model = glm::rotate(model, glm::radians(m_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(m_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::rotate(model, glm::radians(m_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-    model = glm::translate(model, m_position);
+    //model = glm::translate(model, m_position);
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 }
 

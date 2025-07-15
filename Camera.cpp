@@ -1,4 +1,7 @@
 #include"Camera.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 Camera::Camera(int width, int height, glm::vec3 position)
 {
@@ -65,24 +68,43 @@ void Camera::inputs(GLFWwindow* window)
 	{
 		// Hides mouse cursor
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        
+        // Stores the coordinates of the cursor
+        double mouseX;
+        double mouseY;
+
+        // Fetches the coordinates of the cursor
+        glfwGetCursorPos(window, &mouseX, &mouseY);
 
 		// Prevents camera from jumping on the first click
 		if (firstClick)
 		{
-			glfwSetCursorPos(window, (width / 2), (height / 2));
+            mouseAnchor = glm::vec2(mouseX, mouseY);
 			firstClick = false;
 		}
 
-		// Stores the coordinates of the cursor
-		double mouseX;
-		double mouseY;
-		// Fetches the coordinates of the cursor
-		glfwGetCursorPos(window, &mouseX, &mouseY);
-
 		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
 		// and then "transforms" them into degrees 
-		float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
-		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
+        /*float rotValX = (mouseY - mouseAnchor.y - (height / 2)) / height;
+        float rotValY = (mouseX - mouseAnchor.x - (width / 2)) / width;*/
+
+        float rotValX = (mouseY - mouseAnchor.y) / height;
+        float rotValY = (mouseX - mouseAnchor.x) / width;
+
+		float rotX = sensitivity * rotValX;
+		float rotY = sensitivity * rotValY;
+
+        /*ImGui::Begin("Camera");
+        ImGui::SetWindowSize(ImVec2(300, 300));
+        ImGui::Text("X");
+        ImGui::Text(std::to_string(mouseX).c_str());
+        ImGui::Text("Y");
+        ImGui::Text(std::to_string(mouseY).c_str());
+        ImGui::Text("RotVal X");
+        ImGui::Text(std::to_string(rotValX).c_str());
+        ImGui::Text("RotVal Y");
+        ImGui::Text(std::to_string(rotValY).c_str());
+        ImGui::End();*/
 
 		// Calculates upcoming vertical change in the Orientation
 		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
@@ -97,7 +119,7 @@ void Camera::inputs(GLFWwindow* window)
 		Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
 
 		// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
-		glfwSetCursorPos(window, (width / 2), (height / 2));
+		glfwSetCursorPos(window, mouseAnchor.x, mouseAnchor.y);
 	}
 	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
 	{
