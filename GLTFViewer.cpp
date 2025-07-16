@@ -16,55 +16,53 @@
 
 #include <tiny_gltf/tiny_gltf.h>
 
-GLTFViewer::GLTFViewer(const char* gltfFilePath) :
-    m_gltfFilePath{ gltfFilePath }
+GLTFViewer::GLTFViewer(Camera& camera) : m_camera{ camera }
 {
-    
+
 }
 
-int GLTFViewer::run()
+int GLTFViewer::init(const char* gltfFilePath)
 {
-    // Loader shaders
-    const auto glslProgram =
-        compileProgram({ m_vertexShader, m_fragmentShader });
+    m_gltfFilePath = gltfFilePath;
+    GLProgram glslProgram = compileProgram({ m_vertexShader, m_fragmentShader });
+    ID = glslProgram.glId();
 
-    const auto modelViewProjMatrixLocation =
+    modelViewProjMatrixLocation =
         glGetUniformLocation(glslProgram.glId(), "uModelViewProjMatrix");
-    const auto modelViewMatrixLocation =
+    modelViewMatrixLocation =
         glGetUniformLocation(glslProgram.glId(), "uModelViewMatrix");
-    const auto normalMatrixLocation =
+    normalMatrixLocation =
         glGetUniformLocation(glslProgram.glId(), "uNormalMatrix");
 
-    const auto uLightDirectionLocation =
+    uLightDirectionLocation =
         glGetUniformLocation(glslProgram.glId(), "uLightDirection");
-    const auto uLightIntensity =
+    uLightIntensity =
         glGetUniformLocation(glslProgram.glId(), "uLightIntensity");
 
-    const auto uBaseColorTexture =
+    uBaseColorTexture =
         glGetUniformLocation(glslProgram.glId(), "uBaseColorTexture");
-    const auto uBaseColorFactor =
+    uBaseColorFactor =
         glGetUniformLocation(glslProgram.glId(), "uBaseColorFactor");
 
-    const auto uMetallicRoughnessTexture =
+    uMetallicRoughnessTexture =
         glGetUniformLocation(glslProgram.glId(), "uMetallicRoughnessTexture");
-    const auto uMetallicFactor =
+    uMetallicFactor =
         glGetUniformLocation(glslProgram.glId(), "uMetallicFactor");
-    const auto uRoughnessFactor =
+    uRoughnessFactor =
         glGetUniformLocation(glslProgram.glId(), "uRoughnessFactor");
 
-    const auto uEmissiveTexture =
+    uEmissiveTexture =
         glGetUniformLocation(glslProgram.glId(), "uEmissiveTexture");
-    const auto uEmissiveFactor =
+    uEmissiveFactor =
         glGetUniformLocation(glslProgram.glId(), "uEmissiveFactor");
 
-    const auto uOcclusionTexture =
+    uOcclusionTexture =
         glGetUniformLocation(glslProgram.glId(), "uOcclusionTexture");
-    const auto uOcclusionStrength =
+    uOcclusionStrength =
         glGetUniformLocation(glslProgram.glId(), "uOcclusionStrength");
-    const auto uApplyOcclusion =
+    uApplyOcclusion =
         glGetUniformLocation(glslProgram.glId(), "uApplyOcclusion");
 
-    tinygltf::Model model;
     if (!loadGltfFile(model)) {
         return -1;
     }
@@ -73,37 +71,19 @@ int GLTFViewer::run()
 
     // Build projection matrix
     const auto diag = bboxMax - bboxMin;
-    auto maxDistance = glm::length(diag);
-    const auto projMatrix =
-        glm::perspective(70.f, float(m_nWindowWidth) / m_nWindowHeight,
+    maxDistance = glm::length(diag);
+    projMatrix = glm::perspective(70.f, float(m_nWindowWidth) / m_nWindowHeight,
             0.001f * maxDistance, 1.5f * maxDistance);
 
-    /*
-    std::unique_ptr<CameraController> cameraController =
-        std::make_unique<TrackballCameraController>(
-            m_GLFWHandle.window(), 0.5f * maxDistance);
-    if (m_hasUserCamera) {
-        cameraController->setCamera(m_userCamera);
-    }
-    else {
-        const auto center = 0.5f * (bboxMax + bboxMin);
-        const auto up = glm::vec3(0, 1, 0);
-        const auto eye =
-            diag.z > 0 ? center + diag : center + 2.f * glm::cross(diag, up);
-        cameraController->setCamera(Camera{ eye, center, up });
-    }
-    */
-
     // Init light parameters
-    glm::vec3 lightDirection(1, 1, 1);
-    glm::vec3 lightIntensity(1, 1, 1);
-    bool lightFromCamera = false;
+    lightDirection = glm::vec3(1, 1, 1);
+    lightIntensity = glm::vec3(1, 1, 1);
     bool applyOcclusion = true;
 
     // Load textures
-    const auto textureObjects = createTextureObjects(model);
+    textureObjects = createTextureObjects(model);
 
-    GLuint whiteTexture = 0;
+    whiteTexture = 0;
 
     // Create white texture for object with no base color texture
     glGenTextures(1, &whiteTexture);
@@ -117,17 +97,104 @@ int GLTFViewer::run()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    const auto bufferObjects = createBufferObjects(model);
+    bufferObjects = createBufferObjects(model);
+    vertexArrayObjects = createVertexArrayObjects(model, bufferObjects, meshToVertexArrays);
 
-    std::vector<VaoRange> meshToVertexArrays;
-    const auto vertexArrayObjects =
-        createVertexArrayObjects(model, bufferObjects, meshToVertexArrays);
-
-    // Setup OpenGL state for rendering
-    glEnable(GL_DEPTH_TEST);
     glslProgram.use();
 
-    const auto bindMaterial = [&](const auto materialIndex) {
+    return 0;
+}
+
+void GLTFViewer::drawScene(Camera& camera) {
+    camera.updateMatrix(70.0f, 0.001f * maxDistance, 1.5f * maxDistance);
+    const auto viewMatrix = camera.view;
+
+    //std::cout << "SHADER_COMPILATION_SUCCESS for:" << glm::mat4(1.0f) << std::endl;
+
+    if (uLightDirectionLocation >= 0) {
+        const auto lightDirectionInViewSpace = glm::normalize(
+            glm::vec3(viewMatrix * glm::vec4(lightDirection, 0.)));
+        glUniform3f(uLightDirectionLocation, lightDirectionInViewSpace[0],
+            lightDirectionInViewSpace[1], lightDirectionInViewSpace[2]);
+    }
+
+    if (uLightIntensity >= 0) {
+        glUniform3f(uLightIntensity, lightIntensity[0], lightIntensity[1],
+            lightIntensity[2]);
+    }
+
+    if (uApplyOcclusion >= 0) {
+        glUniform1i(uApplyOcclusion, true);
+    }
+
+    // The recursive function that should draw a node
+    // We use a std::function because a simple lambda cannot be recursive
+    const std::function<void(int, const glm::mat4&)> drawNode =
+        [&](int nodeIdx, const glm::mat4& parentMatrix) {
+        const auto& node = model.nodes[nodeIdx];
+        const glm::mat4 modelMatrix =
+            getLocalToWorldMatrix(node, parentMatrix);
+
+        // If the node references a mesh (a node can also reference a
+        // camera, or a light)
+        if (node.mesh >= 0) {
+            const auto mvMatrix =
+                viewMatrix * modelMatrix; // Also called localToCamera matrix
+            const auto mvpMatrix =
+                projMatrix * mvMatrix; // Also called localToScreen matrix
+            // Normal matrix is necessary to maintain normal vectors
+            // orthogonal to tangent vectors
+            const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+
+            glUniformMatrix4fv(modelViewProjMatrixLocation, 1, GL_FALSE,
+                glm::value_ptr(mvpMatrix));
+            glUniformMatrix4fv(
+                modelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+            glUniformMatrix4fv(normalMatrixLocation, 1, GL_FALSE,
+                glm::value_ptr(normalMatrix));
+
+            const auto& mesh = model.meshes[node.mesh];
+            const auto& vaoRange = meshToVertexArrays[node.mesh];
+            for (size_t pIdx = 0; pIdx < mesh.primitives.size(); ++pIdx) {
+                const auto vao = vertexArrayObjects[vaoRange.begin + pIdx];
+                const auto& primitive = mesh.primitives[pIdx];
+
+                bindMaterial(primitive.material);
+
+                glBindVertexArray(vao);
+                if (primitive.indices >= 0) {
+                    const auto& accessor = model.accessors[primitive.indices];
+                    const auto& bufferView = model.bufferViews[accessor.bufferView];
+                    const auto byteOffset =
+                        accessor.byteOffset + bufferView.byteOffset;
+                    glDrawElements(primitive.mode, GLsizei(accessor.count),
+                        accessor.componentType, (const GLvoid*)byteOffset);
+                }
+                else {
+                    // Take first accessor to get the count
+                    const auto accessorIdx = (*begin(primitive.attributes)).second;
+                    const auto& accessor = model.accessors[accessorIdx];
+                    glDrawArrays(primitive.mode, 0, GLsizei(accessor.count));
+                }
+            }
+        }
+
+        // Draw children
+        for (const auto childNodeIdx : node.children) {
+            drawNode(childNodeIdx, modelMatrix);
+        }
+        };
+
+    // Draw the scene referenced by gltf file
+    if (model.defaultScene >= 0) {
+        for (const auto nodeIdx : model.scenes[model.defaultScene].nodes) {
+            drawNode(nodeIdx, glm::mat4(1));
+        }
+    }
+}
+
+void GLTFViewer::bindMaterial(int materialIndex)
+{
         if (materialIndex >= 0) {
             const auto& material = model.materials[materialIndex];
             const auto& pbrMetallicRoughness = material.pbrMetallicRoughness;
@@ -212,10 +279,6 @@ int GLTFViewer::run()
             }
         }
         else {
-            // Apply default material
-            // Defined here:
-            // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#reference-material
-            // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#reference-pbrmetallicroughness3
             if (uBaseColorFactor >= 0) {
                 glUniform4f(uBaseColorFactor, 1, 1, 1, 1);
             }
@@ -252,187 +315,6 @@ int GLTFViewer::run()
                 glUniform1i(uOcclusionTexture, 3);
             }
         }
-        };
-
-    // Lambda function to draw the scene
-    const auto drawScene = [&](Camera& camera) {
-        glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        camera.inputs(m_GLFWHandle.window());
-        camera.updateMatrix(70.0f, 0.001f * maxDistance, 1.5f * maxDistance);
-        const auto viewMatrix = camera.view;
-
-        //std::cout << "SHADER_COMPILATION_SUCCESS for:" << glm::mat4(1.0f) << std::endl;
-
-        if (uLightDirectionLocation >= 0) {
-            if (lightFromCamera) {
-                glUniform3f(uLightDirectionLocation, 0, 0, 1);
-            }
-            else {
-                const auto lightDirectionInViewSpace = glm::normalize(
-                    glm::vec3(viewMatrix * glm::vec4(lightDirection, 0.)));
-                glUniform3f(uLightDirectionLocation, lightDirectionInViewSpace[0],
-                    lightDirectionInViewSpace[1], lightDirectionInViewSpace[2]);
-            }
-        }
-
-        if (uLightIntensity >= 0) {
-            glUniform3f(uLightIntensity, lightIntensity[0], lightIntensity[1],
-                lightIntensity[2]);
-        }
-
-        if (uApplyOcclusion >= 0) {
-            glUniform1i(uApplyOcclusion, applyOcclusion);
-        }
-
-        // The recursive function that should draw a node
-        // We use a std::function because a simple lambda cannot be recursive
-        const std::function<void(int, const glm::mat4&)> drawNode =
-            [&](int nodeIdx, const glm::mat4& parentMatrix) {
-            const auto& node = model.nodes[nodeIdx];
-            const glm::mat4 modelMatrix =
-                getLocalToWorldMatrix(node, parentMatrix);
-
-            // If the node references a mesh (a node can also reference a
-            // camera, or a light)
-            if (node.mesh >= 0) {
-                const auto mvMatrix =
-                    viewMatrix * modelMatrix; // Also called localToCamera matrix
-                const auto mvpMatrix =
-                    projMatrix * mvMatrix; // Also called localToScreen matrix
-                // Normal matrix is necessary to maintain normal vectors
-                // orthogonal to tangent vectors
-                // https://www.lighthouse3d.com/tutorials/glsl-12-tutorial/the-normal-matrix/
-                const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
-
-                glUniformMatrix4fv(modelViewProjMatrixLocation, 1, GL_FALSE,
-                    glm::value_ptr(mvpMatrix));
-                glUniformMatrix4fv(
-                    modelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
-                glUniformMatrix4fv(normalMatrixLocation, 1, GL_FALSE,
-                    glm::value_ptr(normalMatrix));
-
-                const auto& mesh = model.meshes[node.mesh];
-                const auto& vaoRange = meshToVertexArrays[node.mesh];
-                for (size_t pIdx = 0; pIdx < mesh.primitives.size(); ++pIdx) {
-                    const auto vao = vertexArrayObjects[vaoRange.begin + pIdx];
-                    const auto& primitive = mesh.primitives[pIdx];
-
-                    bindMaterial(primitive.material);
-
-                    glBindVertexArray(vao);
-                    if (primitive.indices >= 0) {
-                        const auto& accessor = model.accessors[primitive.indices];
-                        const auto& bufferView = model.bufferViews[accessor.bufferView];
-                        const auto byteOffset =
-                            accessor.byteOffset + bufferView.byteOffset;
-                        glDrawElements(primitive.mode, GLsizei(accessor.count),
-                            accessor.componentType, (const GLvoid*)byteOffset);
-                    }
-                    else {
-                        // Take first accessor to get the count
-                        const auto accessorIdx = (*begin(primitive.attributes)).second;
-                        const auto& accessor = model.accessors[accessorIdx];
-                        glDrawArrays(primitive.mode, 0, GLsizei(accessor.count));
-                    }
-                }
-            }
-
-            // Draw children
-            for (const auto childNodeIdx : node.children) {
-                drawNode(childNodeIdx, modelMatrix);
-            }
-            };
-
-        // Draw the scene referenced by gltf file
-        if (model.defaultScene >= 0) {
-            for (const auto nodeIdx : model.scenes[model.defaultScene].nodes) {
-                drawNode(nodeIdx, glm::mat4(1));
-            }
-        }
-        };
-
-    /*
-    Vertex vertices[] =
-    { //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
-        Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
-        Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 5.0f)},
-        Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(5.0f, 5.0f)},
-        Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(5.0f, 0.0f)},
-
-        Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(-0.8f, 0.5f,  0.0f), glm::vec2(0.0f, 0.0f)},
-        Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(-0.8f, 0.5f,  0.0f), glm::vec2(5.0f, 0.0f)},
-        Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec3(-0.8f, 0.5f,  0.0f), glm::vec2(2.5f, 5.0f)},
-
-        Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, 0.5f, -0.8f), glm::vec2(5.0f, 0.0f)},
-        Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, 0.5f, -0.8f), glm::vec2(0.0f, 0.0f)},
-        Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec3(0.0f, 0.5f, -0.8f), glm::vec2(2.5f, 5.0f)},
-
-        Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.8f, 0.5f,  0.0f), glm::vec2(0.0f, 0.0f)},
-        Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.8f, 0.5f,  0.0f), glm::vec2(5.0f, 0.0f)},
-        Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec3(0.8f, 0.5f,  0.0f), glm::vec2(2.5f, 5.0f)},
-
-        Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, 0.5f,  0.8f), glm::vec2(5.0f, 0.0f)},
-        Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec3(0.0f, 0.5f,  0.8f), glm::vec2(0.0f, 0.0f)},
-        Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec3(0.0f, 0.5f,  0.8f), glm::vec2(2.5f, 5.0f)},
-    };
-
-    GLuint indices[] =
-    {
-        0, 1, 2, // Bottom side
-        0, 2, 3, // Bottom side
-        4, 6, 5, // Left side
-        7, 9, 8, // Non-facing side
-        10, 12, 11, // Right side
-        13, 15, 14 // Facing side
-    };
-    Texture textures[]
-    {
-        Texture("kotone256px.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
-        Texture("planksSpec.png", "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
-    };
-    // Test Pyramid Object
-    Shader shaderProgram("default.vert", "default.frag");
-    std::vector <Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
-    std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
-    std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
-    Mesh kotonyd(verts, ind, tex);
-
-    glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::mat4 pyramidModel = glm::mat4(1.0f);
-    pyramidModel = glm::translate(pyramidModel, pyramidPos);
-
-    glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    //glm::vec4 lightColor = glm::vec4(244.0 / 255.0, 194.0 / 255.0, 194.0 / 255.0, 1.0f);
-    glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
-    glm::mat4 lightModel = glm::mat4(1.0f);
-    lightModel = glm::translate(lightModel, lightPos);
-    shaderProgram.activate();
-
-    //vertex uniforms
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
-
-    //fragment uniforms
-    glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-    glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-    */
-    Camera camera(m_nWindowWidth, m_nWindowHeight, glm::vec3(0.0f, 0.0f, 2.0f));
-    // Loop until the user closes the window
-    while (true) {
-        const auto seconds = glfwGetTime();
-
-        drawScene(camera);
-        //kotonyd.draw(shaderProgram, camera);
-
-        glfwPollEvents(); // Poll for and process events
-
-        m_GLFWHandle.swapBuffers(); // Swap front and back buffers
-    }
-
-    // TODO clean up allocated GL data
-
-    return 0;
 }
 
 bool GLTFViewer::loadGltfFile(tinygltf::Model& model)

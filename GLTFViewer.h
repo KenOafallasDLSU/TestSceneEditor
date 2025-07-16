@@ -8,13 +8,18 @@
 #include"Shader.h"
 #include"Mesh.h"
 #include "GLFWHandler.hpp"
+#include"shaders.hpp"
 
 class GLTFViewer
 {
 public:
-    GLTFViewer(const char* gltfFilePath);
+    GLuint ID;
 
-    int run();
+    GLTFViewer(Camera& camera);
+
+    int init(const char* gltfFilePath);
+    void drawScene(Camera& camera);
+    void bindMaterial(int materialIndex);
 
 private:
     // A range of indices in a vector containing Vertex Array Objects
@@ -31,6 +36,36 @@ private:
     const char* m_gltfFilePath;
     std::string m_vertexShader = "forward.vert";
     std::string m_fragmentShader = "pbr.frag";
+    tinygltf::Model model;
+    Camera m_camera;
+
+    glm::vec3 lightDirection;
+    glm::vec3 lightIntensity;
+    float maxDistance;
+    glm::mat4 projMatrix;
+
+    std::vector<GLuint> bufferObjects;
+    std::vector<VaoRange> meshToVertexArrays;
+    std::vector<GLuint> vertexArrayObjects;
+    std::vector<GLuint> textureObjects;
+    GLuint whiteTexture;
+
+    // UniformLocations
+    int modelViewProjMatrixLocation;
+    int modelViewMatrixLocation;
+    int normalMatrixLocation;
+    int uLightDirectionLocation;
+    int uLightIntensity;
+    int uBaseColorTexture;
+    int uBaseColorFactor;
+    int uMetallicRoughnessTexture;
+    int uMetallicFactor;
+    int uRoughnessFactor;
+    int uEmissiveTexture;
+    int uEmissiveFactor;
+    int uOcclusionTexture;
+    int uOcclusionStrength;
+    int uApplyOcclusion;
 
     std::vector<GLuint> createTextureObjects(const tinygltf::Model& model) const;
 
@@ -39,8 +74,4 @@ private:
     std::vector<GLuint> createVertexArrayObjects(const tinygltf::Model& model,
         const std::vector<GLuint>& bufferObjects,
         std::vector<VaoRange>& meshToVertexArrays) const;
-
-    GLFWHandle m_GLFWHandle{ int(m_nWindowWidth), int(m_nWindowHeight),
-      "glTF Viewer",
-      true };
 };
