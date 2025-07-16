@@ -15,7 +15,10 @@ public:
     glm::vec3 m_rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);
 
-    Object();
+    std::string m_name = "Object";
+    bool m_enabled = true;
+
+    Object(std::string name);
 
     void init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures);
     void draw(Camera& camera);

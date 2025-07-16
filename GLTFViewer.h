@@ -9,10 +9,10 @@
 #include"Mesh.h"
 #include "GLFWHandler.hpp"
 
-class SceneEditor
+class GLTFViewer
 {
 public:
-    SceneEditor(const char* gltfFilePath);
+    GLTFViewer(const char* gltfFilePath);
 
     int run();
 

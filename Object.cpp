@@ -1,6 +1,9 @@
 #include"Object.hpp"
 
-Object::Object() : shader("default.vert", "default.frag") { }
+Object::Object(std::string name) : shader("default.vert", "default.frag") 
+{
+    m_name = name;
+}
 
 void Object::init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& normalVerts, std::vector <glm::vec2>& textureVerts, std::vector <Face>& faces, std::vector <Texture>& textures)
 {
@@ -9,7 +12,7 @@ void Object::init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& 
 
     std::cout << "Creating Object" << std::endl;
 
-    transform();
+    //transform();
 
     shader.activate();
     glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -20,23 +23,26 @@ void Object::init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& 
 
 void Object::draw(Camera& camera)
 {
-    mesh.draw(shader, camera);
+    if (m_enabled) {
+        transform();
+        mesh.draw(shader, camera);
+    }
 }
 
 void Object::setScale(glm::vec3 scale)
 {
     m_scale = scale;
-    transform();
+    //transform();
 }
 void Object::setRotation(glm::vec3 rotation)
 {
     m_rotation = rotation;
-    transform();
+    //transform();
 }
 void Object::setPosition(glm::vec3 position)
 {
     m_position = position;
-    transform();
+    //transform();
 }
 
 void Object::transform()

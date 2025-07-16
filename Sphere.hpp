@@ -10,7 +10,7 @@ public:
     std::vector <glm::vec3> sphere_normals;
     std::vector <Face> sphere_faces;
 
-    Sphere(std::vector <Texture>& textures);
+    Sphere(std::string name, std::vector <Texture>& textures);
 
     void buildVerticesSmooth();
 };

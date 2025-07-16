@@ -8532,7 +8532,8 @@ bool ImGui::ListBox(const char* label, int* current_item, const char* (*getter)(
             const bool item_selected = (i == *current_item);
             if (Selectable(item_text, item_selected))
             {
-                *current_item = i;
+                //*current_item = i;
+                *current_item = (*current_item == i) ? -1 : i;
                 value_changed = true;
             }
             if (item_selected)

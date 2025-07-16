@@ -1,4 +1,4 @@
-#include"SceneEditor.h"
+#include"GLTFViewer.h"
 
 #include <iostream>
 #include <numeric>
@@ -16,13 +16,13 @@
 
 #include <tiny_gltf/tiny_gltf.h>
 
-SceneEditor::SceneEditor(const char* gltfFilePath) :
+GLTFViewer::GLTFViewer(const char* gltfFilePath) :
     m_gltfFilePath{ gltfFilePath }
 {
     
 }
 
-int SceneEditor::run()
+int GLTFViewer::run()
 {
     // Loader shaders
     const auto glslProgram =
@@ -435,7 +435,7 @@ int SceneEditor::run()
     return 0;
 }
 
-bool SceneEditor::loadGltfFile(tinygltf::Model& model)
+bool GLTFViewer::loadGltfFile(tinygltf::Model& model)
 {
     std::clog << "Loading file " << m_gltfFilePath << std::endl;
 
@@ -462,7 +462,7 @@ bool SceneEditor::loadGltfFile(tinygltf::Model& model)
     return true;
 }
 
-std::vector<GLuint> SceneEditor::createTextureObjects(
+std::vector<GLuint> GLTFViewer::createTextureObjects(
     const tinygltf::Model& model) const
 {
     std::vector<GLuint> textureObjects(model.textures.size(), 0);
@@ -507,7 +507,7 @@ std::vector<GLuint> SceneEditor::createTextureObjects(
     return textureObjects;
 }
 
-std::vector<GLuint> SceneEditor::createBufferObjects(
+std::vector<GLuint> GLTFViewer::createBufferObjects(
     const tinygltf::Model& model) const
 {
     std::vector<GLuint> bufferObjects(model.buffers.size(), 0);
@@ -523,7 +523,7 @@ std::vector<GLuint> SceneEditor::createBufferObjects(
     return bufferObjects;
 }
 
-std::vector<GLuint> SceneEditor::createVertexArrayObjects(
+std::vector<GLuint> GLTFViewer::createVertexArrayObjects(
     const tinygltf::Model& model, const std::vector<GLuint>& bufferObjects,
     std::vector<VaoRange>& meshToVertexArrays) const
 {

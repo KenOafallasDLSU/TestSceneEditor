@@ -40,6 +40,9 @@
     <Filter Include="Header Files\renderer\primitives">
       <UniqueIdentifier>{9eab6f44-1de8-4b84-be15-45235a0d12a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\app">
+      <UniqueIdentifier>{7a630040-cf62-4e44-bca5-de92e9c029d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -74,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneEditor.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gltf.cpp">
       <Filter>Source Files\utils</Filter>
@@ -123,6 +123,9 @@
     <ClCompile Include="Libraries\include\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLTFViewer.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\include\glad\glad.h">
@@ -161,7 +164,7 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\renderer</Filter>
     </ClInclude>
-    <ClInclude Include="SceneEditor.h">
+    <ClInclude Include="GLTFViewer.h">
       <Filter>Header Files\app</Filter>
     </ClInclude>
     <ClInclude Include="gltf.h">

@@ -44,5 +44,5 @@ public:
         }
     };
 
-    Plane(std::vector <Texture>& textures);
+    Plane(std::string name, std::vector <Texture>& textures);
 };

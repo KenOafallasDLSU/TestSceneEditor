@@ -3,12 +3,19 @@
 #include "imgui_impl_opengl3.h"
 
 #include"Mesh.h"
-#include"SceneEditor.h"
+#include"GLTFViewer.h"
 #include<tiny_gltf/tiny_gltf.h>
 
 #include"Cube.hpp"
 #include"Plane.hpp"
 #include"Sphere.hpp"
+
+const char* objectNameGetter(void* data, int ind)
+{
+    Object* objects = (Object*)data;
+    Object& currentObject = objects[ind];
+    return currentObject.m_name.c_str();
+}
 
 int main()
 {
@@ -59,7 +66,7 @@ int main()
         Texture("Mocap512px.png", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE)
     };
 
-    Sphere sphere(defaultTex);
+    Sphere sphere("Sphere", defaultTex);
     scene.push_back(sphere);
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
@@ -95,61 +102,74 @@ int main()
         }
 
         if (!playMode) {
-            ImGui::Begin("Window");
-            ImGui::Text("Kenneth");
-
+            ImGui::Begin("AndGin");
             if (ImGui::Button("Play"))
             {
                 playMode = true;
             }
 
+            ImGui::ListBox("Scene", &hierarchySelectedInd, objectNameGetter, scene.data(), scene.size());
+            if (hierarchySelectedInd >= 0) {
+                ImGui::Text(scene[hierarchySelectedInd].m_name.c_str());
+            }
+
             if (ImGui::Button("Cube"))
             {
-                Cube newCube(defaultTex);
+                std::string buf("Cube ");
+                buf.append(std::to_string(scene.size()).c_str());
+                Cube newCube(buf, defaultTex);
                 scene.push_back(newCube);
                 scene[scene.size() - 1].setPosition(glm::vec3(3 * scene.size(), 0, 0));
             }
 
             if (ImGui::Button("Sphere"))
             {
-                Sphere newSphere(defaultTex);
+                std::string buf("Sphere ");
+                buf.append(std::to_string(scene.size()).c_str());
+                Sphere newSphere(buf, defaultTex);
                 scene.push_back(newSphere);
                 scene[scene.size() - 1].setPosition(glm::vec3(3 * scene.size(), 0, 0));
             }
 
             if (ImGui::Button("Plane"))
             {
-                Plane newPlane(defaultTex);
+                std::string buf("Plane ");
+                buf.append(std::to_string(scene.size()).c_str());
+                Plane newPlane(buf, defaultTex);
                 scene.push_back(newPlane);
                 scene[scene.size() - 1].setPosition(glm::vec3(0, 0, -5));
             }
 
-            ImGui::Text(std::to_string(scene[scene.size() - 1].m_position.x).c_str());
-            ImGui::Text(std::to_string(scene[scene.size() - 1].m_position.y).c_str());
-            ImGui::Text(std::to_string(scene[scene.size() - 1].m_position.z).c_str());
-
-            float position[3];
-            ImGui::InputFloat3("Position", position);
-            if (ImGui::Button("Submit Position"))
-            {
-                scene[scene.size() - 1].setPosition(glm::vec3(position[0], position[1], position[2]));
-            }
-
-            float rotation[3];
-            ImGui::InputFloat3("Rotation", rotation);
-            if (ImGui::Button("Submit Rotation"))
-            {
-                scene[scene.size() - 1].setRotation(glm::vec3(rotation[0], rotation[1], rotation[2]));
-            }
-
-            float scale[3];
-            ImGui::InputFloat3("Scale", scale);
-            if (ImGui::Button("Submit Scale"))
-            {
-                scene[scene.size() - 1].setScale(glm::vec3(scale[0], scale[1], scale[2]));
-            }
-
             ImGui::End();
+
+            if (hierarchySelectedInd >= 0) {
+                ImGui::Begin(scene[hierarchySelectedInd].m_name.c_str());
+
+                ImGui::Checkbox("Enabled", &scene[hierarchySelectedInd].m_enabled);
+
+                ImGui::Text("Position");
+                ImGui::InputFloat("X##Position", &scene[hierarchySelectedInd].m_position.x, 0.0f, 0.0f, "%0.1f");
+                ImGui::InputFloat("Y##Position", &scene[hierarchySelectedInd].m_position.y, 0.0f, 0.0f, "%0.1f");
+                ImGui::InputFloat("Z##Position", &scene[hierarchySelectedInd].m_position.z, 0.0f, 0.0f, "%0.1f");
+
+                ImGui::Text("Rotation");
+                ImGui::InputFloat("X##Rotation", &scene[hierarchySelectedInd].m_rotation.x, 0.0f, 0.0f, "%0.1f");
+                ImGui::InputFloat("Y##Rotation", &scene[hierarchySelectedInd].m_rotation.y, 0.0f, 0.0f, "%0.1f");
+                ImGui::InputFloat("Z##Rotation", &scene[hierarchySelectedInd].m_rotation.z, 0.0f, 0.0f, "%0.1f");
+
+                ImGui::Text("Scale");
+                ImGui::InputFloat("X##Scale", &scene[hierarchySelectedInd].m_scale.x, 0.0f, 0.0f, "%0.1f");
+                ImGui::InputFloat("Y##Scale", &scene[hierarchySelectedInd].m_scale.y, 0.0f, 0.0f, "%0.1f");
+                ImGui::InputFloat("Z##Scale", &scene[hierarchySelectedInd].m_scale.z, 0.0f, 0.0f, "%0.1f");
+
+                if (ImGui::Button("Delete"))
+                {
+                    scene.erase(scene.begin() + hierarchySelectedInd);
+                    hierarchySelectedInd = -1;
+                }
+
+                ImGui::End();
+            }
         }
         else {
             ImGui::Begin("Window");

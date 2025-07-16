@@ -84,7 +84,7 @@ void Sphere::buildVerticesSmooth()
     }
 }
 
-Sphere::Sphere(std::vector <Texture>& textures)
+Sphere::Sphere(std::string name, std::vector <Texture>& textures) : Object(name)
 {
     std::cout << "Creating Sphere" << std::endl;
     buildVerticesSmooth();

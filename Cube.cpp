@@ -1,7 +1,8 @@
 #include"Cube.hpp"
 
-Cube::Cube(std::vector <Texture>& textures)
+Cube::Cube(std::string name, std::vector <Texture>& textures) : Object(name)
 {
-    std::cout << "Creating Cube" << std::endl;
+    m_name = name;
+    std::cout << "Creating " << m_name << std::endl;
     init(cube_verts, cube_normals, cube_texCoords, cube_faces, textures);
 }

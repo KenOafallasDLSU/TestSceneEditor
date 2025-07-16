@@ -124,5 +124,5 @@ public:
         }
     };
 
-    Cube(std::vector <Texture>& textures);
+    Cube(std::string name, std::vector <Texture>& textures);
 };
