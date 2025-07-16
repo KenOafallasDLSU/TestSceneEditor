@@ -11,11 +11,13 @@ out vec2 texCoord;
 
 uniform mat4 camMatrix;
 uniform mat4 model;
+uniform float aspectRatio;
 
 void main()
 {
     currentPos = vec3(model * vec4(aPos, 1.0f));
-
+    currentPos.x = currentPos.x / aspectRatio;
+    currentPos.z = currentPos.z / aspectRatio;
     gl_Position = camMatrix * vec4(currentPos, 1.0);
 
     color = vec3(1.0f, 1.0f, 1.0f);

@@ -84,6 +84,7 @@ void Mesh::draw(Shader& shader, Camera& camera)
     }
 
     // Take care of the camera Matrix
+    glUniform1f(glGetUniformLocation(shader.ID, "aspectRatio"), (float)camera.width / (float)camera.height);
     glUniform3f(glGetUniformLocation(shader.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
     camera.initMatrix(shader, "camMatrix");
 
