@@ -10,7 +10,7 @@ void Object::init(std::vector <glm::vec3>& shapeVerts, std::vector <glm::vec3>& 
     mesh.init(shapeVerts, normalVerts, textureVerts, faces, textures);
     Object::m_textures = textures;
 
-    std::cout << "Creating Object" << std::endl;
+    //std::cout << "Creating Object" << std::endl;
 
     //transform();
 
