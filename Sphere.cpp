@@ -67,7 +67,7 @@ void Sphere::buildVerticesSmooth()
                         FaceIndex{k2 + 1, k2 + 1, k2 + 1},
                         FaceIndex{k1 + 2, k1 + 2, k1 + 2}
                     }
-                    });  // k1---k2---k1+1
+                 });  // k1---k2---k1+1
             }
 
             if (i != (stackCount - 1))

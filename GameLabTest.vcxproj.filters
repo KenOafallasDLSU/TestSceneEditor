@@ -34,14 +34,20 @@
     <Filter Include="Header Files\app">
       <UniqueIdentifier>{a24cb565-a83e-4d2e-b1ca-d6c81b7f1686}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\renderer\primitives">
-      <UniqueIdentifier>{e8c1ce52-ee23-4dd4-a9e9-6e316c73eed3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\renderer\primitives">
-      <UniqueIdentifier>{9eab6f44-1de8-4b84-be15-45235a0d12a6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\app">
       <UniqueIdentifier>{7a630040-cf62-4e44-bca5-de92e9c029d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer\meshes">
+      <UniqueIdentifier>{10f2b8f3-1dc5-440c-ad02-3d637fcbec86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer\meshes\primitives">
+      <UniqueIdentifier>{9eab6f44-1de8-4b84-be15-45235a0d12a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderer\meshes">
+      <UniqueIdentifier>{afc026dd-3212-4d92-bcda-273e87ecbd21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderer\meshes\primitives">
+      <UniqueIdentifier>{e8c1ce52-ee23-4dd4-a9e9-6e316c73eed3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -82,16 +88,13 @@
       <Filter>Source Files\utils</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
-      <Filter>Source Files\renderer\primitives</Filter>
+      <Filter>Source Files\renderer\meshes\primitives</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\renderer\primitives</Filter>
+      <Filter>Source Files\renderer\meshes\primitives</Filter>
     </ClCompile>
     <ClCompile Include="Plane.cpp">
-      <Filter>Source Files\renderer\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files\renderer\primitives</Filter>
+      <Filter>Source Files\renderer\meshes\primitives</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\include\glm\detail\glm.cpp">
       <Filter>Source Files</Filter>
@@ -125,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="GLTFViewer.cpp">
       <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\renderer\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Wavefront.cpp">
+      <Filter>Source Files\renderer\meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,16 +186,13 @@
       <Filter>Source Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="Cube.hpp">
-      <Filter>Header Files\renderer\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.hpp">
-      <Filter>Header Files\renderer\primitives</Filter>
+      <Filter>Header Files\renderer\meshes\primitives</Filter>
     </ClInclude>
     <ClInclude Include="Plane.hpp">
-      <Filter>Header Files\renderer\primitives</Filter>
+      <Filter>Header Files\renderer\meshes\primitives</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.hpp">
-      <Filter>Header Files\renderer\primitives</Filter>
+      <Filter>Header Files\renderer\meshes\primitives</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\include\glm\detail\_features.hpp">
       <Filter>Header Files</Filter>
@@ -1093,6 +1099,12 @@
     </ClInclude>
     <ClInclude Include="Libraries\include\imgui\imgui_impl_opengl3_loader.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.hpp">
+      <Filter>Header Files\renderer\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Wavefront.hpp">
+      <Filter>Header Files\renderer\meshes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

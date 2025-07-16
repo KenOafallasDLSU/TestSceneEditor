@@ -46,7 +46,7 @@ vec4 pointLight()
 vec4 directionalLight()
 {
     // ambient light
-    float ambient = 0.15f;
+    float ambient = 0.4f;
 
     // diffuse light
     vec3 normal = normalize(Normal);
@@ -99,7 +99,7 @@ vec4 spotLight()
 
 void main()
 {
-    FragColor = pointLight();
-    //FragColor = directionalLight();
+    //FragColor = pointLight();
+    FragColor = directionalLight();
     //FragColor = spotLight();
 }

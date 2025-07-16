@@ -9,6 +9,7 @@
 #include"Cube.hpp"
 #include"Plane.hpp"
 #include"Sphere.hpp"
+#include"Wavefront.hpp"
 
 const char* objectNameGetter(void* data, int ind)
 {
@@ -66,8 +67,11 @@ int main()
         Texture("Mocap512px.png", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE)
     };
 
-    Sphere sphere("Sphere", defaultTex);
-    scene.push_back(sphere);
+    /*Sphere sphere("Sphere", defaultTex);
+    scene.push_back(sphere);*/
+
+    Wavefront wavefront("Heart.obj", defaultTex);
+    scene.push_back(wavefront);
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 

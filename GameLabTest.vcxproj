@@ -162,6 +162,7 @@
     <ClCompile Include="tiny_gltf_impl.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="Wavefront.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -486,6 +487,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="Wavefront.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="default.frag" />
