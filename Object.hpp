@@ -10,6 +10,7 @@ public:
     Mesh mesh;
 
     std::vector <Texture> m_textures;
+    std::string m_textureFile = "default";
 
     glm::vec3 m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::vec3 m_rotation = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -28,5 +29,5 @@ public:
     void setPosition(glm::vec3 position);
     void transform();
 
-    void setTextures(std::vector <Texture>& textures);
+    void setTextures(const char* textureFile);
 };

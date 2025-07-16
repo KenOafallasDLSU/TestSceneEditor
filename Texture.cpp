@@ -1,6 +1,6 @@
 #include"Texture.h"
 
-Texture::Texture(const char* image, const char* texType, GLuint slot, GLenum format, GLenum pixelType)
+Texture::Texture(const char* image, const char* texType, GLuint slot, GLenum pixelType)
 {
 	type = texType;
 	int widthImg, heightImg, numColCh;
@@ -22,6 +22,16 @@ Texture::Texture(const char* image, const char* texType, GLuint slot, GLenum for
 	// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 	// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
+    GLenum format;
+    if (numColCh == 4) {
+        format = GL_RGBA;
+    }
+    else if (numColCh == 3) {
+        format = GL_RGB;
+    }
+    else if (numColCh == 1) {
+        format = GL_RED;
+    }
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, format, pixelType, bytes);
 	glGenerateMipmap(GL_TEXTURE_2D);
 

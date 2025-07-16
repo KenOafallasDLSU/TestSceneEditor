@@ -64,23 +64,20 @@ int main()
 
     std::vector <Object> scene;
     std::vector <Texture> defaultTex{
-        Texture("Mocap512px.png", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE)
+        Texture("white.png", "diffuse", 0, GL_UNSIGNED_BYTE)
     };
 
-    /*Sphere sphere("Sphere", defaultTex);
-    scene.push_back(sphere);*/
+    Cube cube("Default Cube", defaultTex);
+    scene.push_back(cube);
 
-    Wavefront wavefront("Heart.obj", defaultTex);
-    scene.push_back(wavefront);
+    /*Wavefront wavefront("Heart.obj", defaultTex);
+    scene.push_back(wavefront);*/
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
-    std::vector <Texture> brickTex{
-        Texture("brick.png", "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
-    };
-
     bool playMode = false;
     int hierarchySelectedInd;
+    char textureFilename[64] = "";
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -106,16 +103,13 @@ int main()
         }
 
         if (!playMode) {
-            ImGui::Begin("AndGin");
+            ImGui::Begin("Scene Editor");
             if (ImGui::Button("Play"))
             {
                 playMode = true;
             }
 
-            ImGui::ListBox("Scene", &hierarchySelectedInd, objectNameGetter, scene.data(), scene.size());
-            if (hierarchySelectedInd >= 0) {
-                ImGui::Text(scene[hierarchySelectedInd].m_name.c_str());
-            }
+            ImGui::ListBox("Elements", &hierarchySelectedInd, objectNameGetter, scene.data(), scene.size());
 
             if (ImGui::Button("Cube"))
             {
@@ -123,7 +117,6 @@ int main()
                 buf.append(std::to_string(scene.size()).c_str());
                 Cube newCube(buf, defaultTex);
                 scene.push_back(newCube);
-                scene[scene.size() - 1].setPosition(glm::vec3(3 * scene.size(), 0, 0));
             }
 
             if (ImGui::Button("Sphere"))
@@ -132,7 +125,6 @@ int main()
                 buf.append(std::to_string(scene.size()).c_str());
                 Sphere newSphere(buf, defaultTex);
                 scene.push_back(newSphere);
-                scene[scene.size() - 1].setPosition(glm::vec3(3 * scene.size(), 0, 0));
             }
 
             if (ImGui::Button("Plane"))
@@ -141,7 +133,14 @@ int main()
                 buf.append(std::to_string(scene.size()).c_str());
                 Plane newPlane(buf, defaultTex);
                 scene.push_back(newPlane);
-                scene[scene.size() - 1].setPosition(glm::vec3(0, 0, -5));
+            }
+
+            if (ImGui::Button("Import OBJ"))
+            {
+                //std::string buf("Plane ");
+                //buf.append(std::to_string(scene.size()).c_str());
+                Wavefront wavefront("Heart.obj", defaultTex);
+                scene.push_back(wavefront);
             }
 
             ImGui::End();
@@ -166,6 +165,14 @@ int main()
                 ImGui::InputFloat("Y##Scale", &scene[hierarchySelectedInd].m_scale.y, 0.0f, 0.0f, "%0.1f");
                 ImGui::InputFloat("Z##Scale", &scene[hierarchySelectedInd].m_scale.z, 0.0f, 0.0f, "%0.1f");
 
+                ImGui::Text("Current Material");
+                ImGui::Text(scene[hierarchySelectedInd].m_textureFile.c_str());
+                ImGui::InputText("Material Input", textureFilename, 64);
+                if (ImGui::Button("Set Material"))
+                {
+                    scene[hierarchySelectedInd].setTextures(textureFilename);
+                }
+
                 if (ImGui::Button("Delete"))
                 {
                     scene.erase(scene.begin() + hierarchySelectedInd);
@@ -176,8 +183,7 @@ int main()
             }
         }
         else {
-            ImGui::Begin("Window");
-            ImGui::Text("Kenneth");
+            ImGui::Begin("In Play");
             if (ImGui::Button("Stop Play"))
             {
                 playMode = false;

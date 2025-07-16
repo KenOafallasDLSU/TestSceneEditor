@@ -58,8 +58,12 @@ void Object::transform()
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 }
 
-void Object::setTextures(std::vector <Texture>& textures)
+void Object::setTextures(const char* textureFile)
 {
-    Object::m_textures = textures;
-    mesh.setTextures(textures);
+    std::vector <Texture> textureVec{
+        Texture(textureFile, "diffuse", 0, GL_UNSIGNED_BYTE)
+    };
+    Object::m_textures = textureVec;
+    m_textureFile = textureFile;
+    mesh.setTextures(m_textures);
 }
