@@ -13,7 +13,6 @@
 #include"Camera.h"
 #include"shaders.hpp"
 
-
 #include <tiny_gltf/tiny_gltf.h>
 
 GLTFViewer::GLTFViewer(Camera& camera) : m_camera{ camera }
@@ -106,10 +105,9 @@ int GLTFViewer::init(const char* gltfFilePath)
 }
 
 void GLTFViewer::drawScene(Camera& camera) {
-    camera.updateMatrix(70.0f, 0.001f * maxDistance, 1.5f * maxDistance);
+    //camera.updateMatrix(70.0f, 0.001f * maxDistance, 1.5f * maxDistance);
+    //camera.updateMatrix(45.0f, 0.1f, 100.0f);
     const auto viewMatrix = camera.view;
-
-    //std::cout << "SHADER_COMPILATION_SUCCESS for:" << glm::mat4(1.0f) << std::endl;
 
     if (uLightDirectionLocation >= 0) {
         const auto lightDirectionInViewSpace = glm::normalize(
@@ -128,7 +126,6 @@ void GLTFViewer::drawScene(Camera& camera) {
     }
 
     // The recursive function that should draw a node
-    // We use a std::function because a simple lambda cannot be recursive
     const std::function<void(int, const glm::mat4&)> drawNode =
         [&](int nodeIdx, const glm::mat4& parentMatrix) {
         const auto& node = model.nodes[nodeIdx];
@@ -191,6 +188,7 @@ void GLTFViewer::drawScene(Camera& camera) {
             drawNode(nodeIdx, glm::mat4(1));
         }
     }
+
 }
 
 void GLTFViewer::bindMaterial(int materialIndex)
@@ -363,7 +361,7 @@ std::vector<GLuint> GLTFViewer::createTextureObjects(
         assert(texture.source >= 0);
         const tinygltf::Image& image = model.images[texture.source];
 
-        std::cout << "SHADER_COMPILATION_SUCCESS for:" << image.uri << std::endl;
+        std::cout << "TEXTURE_CREATION_SUCCESS for:" << image.uri << std::endl;
 
         const auto& sampler =
             texture.sampler >= 0 ? model.samplers[texture.sampler] : defaultSampler;
@@ -401,6 +399,8 @@ std::vector<GLuint> GLTFViewer::createBufferObjects(
             model.buffers[i].data.data(), 0);
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    std::cout << "BUFFER_OBJECTS_SIZE: " << bufferObjects.size() << std::endl;
 
     return bufferObjects;
 }
@@ -505,11 +505,7 @@ std::vector<GLuint> GLTFViewer::createVertexArrayObjects(
 
                 assert(GL_ELEMENT_ARRAY_BUFFER == bufferView.target);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
-                    bufferObjects[bufferIdx]); // Binding the index buffer to
-                // GL_ELEMENT_ARRAY_BUFFER while the VAO
-                // is bound is enough to tell OpenGL we
-                // want to use that index buffer for that
-                // VAO
+                    bufferObjects[bufferIdx]); 
             }
         }
     }
