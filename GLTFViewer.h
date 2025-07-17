@@ -7,7 +7,6 @@
 #include"VertexArray.h"
 #include"Shader.h"
 #include"Mesh.h"
-#include "GLFWHandler.hpp"
 #include"shaders.hpp"
 
 class GLTFViewer

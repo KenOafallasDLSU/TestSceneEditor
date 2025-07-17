@@ -50,11 +50,11 @@ vec4 directionalLight()
 
     // diffuse light
     vec3 normal = normalize(Normal);
-    vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 0.0f));
+    vec3 lightDirection = normalize(vec3(0.8f, 0.6f, 0.4f));
     float diffuse = max(dot(normal, lightDirection), 0.0f);
 
     // specular light
-	float specularLight = 0.7f;
+	float specularLight = 1f;
 	vec3 viewDirection = normalize(camPos - currentPos);
 	vec3 reflectionDirection = reflect(-lightDirection, normal);
 	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 10);

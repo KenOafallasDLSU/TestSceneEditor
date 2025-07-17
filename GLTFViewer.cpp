@@ -409,7 +409,7 @@ std::vector<GLuint> GLTFViewer::createVertexArrayObjects(
     const tinygltf::Model& model, const std::vector<GLuint>& bufferObjects,
     std::vector<VaoRange>& meshToVertexArrays) const
 {
-    std::vector<GLuint> vertexArrayObjects; // We don't know the size yet
+    std::vector<GLuint> vertexArrayObjects;
 
     // For each mesh of model we keep its range of VAOs
     meshToVertexArrays.resize(model.meshes.size());
@@ -438,8 +438,6 @@ std::vector<GLuint> GLTFViewer::createVertexArrayObjects(
             const auto& primitive = mesh.primitives[pIdx];
             glBindVertexArray(vao);
             { // POSITION attribute
-              // scope, so we can declare const variable with the same name on each
-              // scope
                 const auto iterator = primitive.attributes.find("POSITION");
                 if (iterator != end(primitive.attributes)) {
                     const auto accessorIdx = (*iterator).second;
@@ -449,9 +447,6 @@ std::vector<GLuint> GLTFViewer::createVertexArrayObjects(
 
                     glEnableVertexAttribArray(VERTEX_ATTRIB_POSITION_IDX);
                     assert(GL_ARRAY_BUFFER == bufferView.target);
-                    // Theorically we could also use bufferView.target, but it is safer
-                    // Here it is important to know that the next call
-                    // (glVertexAttribPointer) use what is currently bound
                     glBindBuffer(GL_ARRAY_BUFFER, bufferObjects[bufferIdx]);
 
                     // tinygltf converts strings type like "VEC3, "VEC2" to the number of
@@ -462,8 +457,6 @@ std::vector<GLuint> GLTFViewer::createVertexArrayObjects(
                         (const GLvoid*)byteOffset);
                 }
             }
-            // todo Refactor to remove code duplication (loop over "POSITION",
-            // "NORMAL" and their corresponding VERTEX_ATTRIB_*)
             { // NORMAL attribute
                 const auto iterator = primitive.attributes.find("NORMAL");
                 if (iterator != end(primitive.attributes)) {

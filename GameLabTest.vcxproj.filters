@@ -31,12 +31,6 @@
     <Filter Include="Header Files\utils">
       <UniqueIdentifier>{ca085202-0654-49ab-b9de-603d463d9d40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\app">
-      <UniqueIdentifier>{a24cb565-a83e-4d2e-b1ca-d6c81b7f1686}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\app">
-      <UniqueIdentifier>{7a630040-cf62-4e44-bca5-de92e9c029d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\renderer\meshes">
       <UniqueIdentifier>{10f2b8f3-1dc5-440c-ad02-3d637fcbec86}</UniqueIdentifier>
     </Filter>
@@ -48,6 +42,12 @@
     </Filter>
     <Filter Include="Source Files\renderer\meshes\primitives">
       <UniqueIdentifier>{e8c1ce52-ee23-4dd4-a9e9-6e316c73eed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\subcomponents">
+      <UniqueIdentifier>{7a630040-cf62-4e44-bca5-de92e9c029d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\subcomponents">
+      <UniqueIdentifier>{a24cb565-a83e-4d2e-b1ca-d6c81b7f1686}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,7 +127,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLTFViewer.cpp">
-      <Filter>Source Files\app</Filter>
+      <Filter>Source Files\subcomponents</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\renderer\meshes</Filter>
@@ -174,13 +174,10 @@
       <Filter>Header Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="GLTFViewer.h">
-      <Filter>Header Files\app</Filter>
+      <Filter>Header Files\subcomponents</Filter>
     </ClInclude>
     <ClInclude Include="gltf.h">
       <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="GLFWHandler.hpp">
-      <Filter>Source Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="shaders.hpp">
       <Filter>Source Files\utils</Filter>

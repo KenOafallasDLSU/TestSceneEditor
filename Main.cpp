@@ -115,7 +115,8 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        if(playMode) camera.inputs(window);
+        ImGuiIO& io = ImGui::GetIO();
+        if (!io.WantCaptureMouse) camera.inputs(window);
         camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
         if (gltfViewerMode) {
@@ -243,13 +244,17 @@ int main()
                     + std::to_string(scene[hierarchySelectedInd].m_position.z) + " )";
                 if (ImGui::CollapsingHeader(currentPos.c_str()))
                 {
-                    ImGui::InputFloat("X##Position", &positionInput[0], 0.0f, 0.0f, "%0.1f");
-                    ImGui::InputFloat("Y##Position", &positionInput[1], 0.0f, 0.0f, "%0.1f");
-                    ImGui::InputFloat("Z##Position", &positionInput[2], 0.0f, 0.0f, "%0.1f");
+                    ImGui::InputFloat("X##Position", &positionInput[0], 0.0f, 0.0f, "%0.2f");
+                    ImGui::InputFloat("Y##Position", &positionInput[1], 0.0f, 0.0f, "%0.2f");
+                    ImGui::InputFloat("Z##Position", &positionInput[2], 0.0f, 0.0f, "%0.2f");
                     if (ImGui::Button("Edit Position"))
                     {
                         scene[hierarchySelectedInd].setPosition(glm::vec3(positionInput[0], positionInput[1], positionInput[2]));
                         saveState(sceneHistory, scene, historyInd);
+                        //reset input
+                        positionInput[0] = 0.0f;
+                        positionInput[1] = 0.0f;
+                        positionInput[2] = 0.0f;
                     }
                 }
                 ImGui::Separator();
@@ -259,13 +264,17 @@ int main()
                 if (ImGui::CollapsingHeader(currentRot.c_str()))
                 {
 
-                    ImGui::InputFloat("X##Rotation", &rotationInput[0], 0.0f, 0.0f, "%0.1f");
-                    ImGui::InputFloat("Y##Rotation", &rotationInput[1], 0.0f, 0.0f, "%0.1f");
-                    ImGui::InputFloat("Z##Rotation", &rotationInput[2], 0.0f, 0.0f, "%0.1f");
+                    ImGui::InputFloat("X##Rotation", &rotationInput[0], 0.0f, 0.0f, "%0.2f");
+                    ImGui::InputFloat("Y##Rotation", &rotationInput[1], 0.0f, 0.0f, "%0.2f");
+                    ImGui::InputFloat("Z##Rotation", &rotationInput[2], 0.0f, 0.0f, "%0.2f");
                     if (ImGui::Button("Edit Rotation"))
                     {
                         scene[hierarchySelectedInd].setRotation(glm::vec3(rotationInput[0], rotationInput[1], rotationInput[2]));
                         saveState(sceneHistory, scene, historyInd);
+                        //reset input
+                        rotationInput[0] = 0.0f;
+                        rotationInput[1] = 0.0f;
+                        rotationInput[2] = 0.0f;
                     }
                 }
                 ImGui::Separator();
@@ -274,13 +283,17 @@ int main()
                     + std::to_string(scene[hierarchySelectedInd].m_scale.z) + " )";
                 if (ImGui::CollapsingHeader(currentScale.c_str()))
                 {
-                    ImGui::InputFloat("X##Scale", &scaleInput[0], 0.0f, 0.0f, "%0.1f");
-                    ImGui::InputFloat("Y##Scale", &scaleInput[1], 0.0f, 0.0f, "%0.1f");
-                    ImGui::InputFloat("Z##Scale", &scaleInput[2], 0.0f, 0.0f, "%0.1f");
+                    ImGui::InputFloat("X##Scale", &scaleInput[0], 0.0f, 0.0f, "%0.2f");
+                    ImGui::InputFloat("Y##Scale", &scaleInput[1], 0.0f, 0.0f, "%0.2f");
+                    ImGui::InputFloat("Z##Scale", &scaleInput[2], 0.0f, 0.0f, "%0.2f");
                     if (ImGui::Button("Edit Scale"))
                     {
                         scene[hierarchySelectedInd].setScale(glm::vec3(scaleInput[0], scaleInput[1], scaleInput[2]));
                         saveState(sceneHistory, scene, historyInd);
+                        //reset input
+                        scaleInput[0] = 1.0f;
+                        scaleInput[1] = 1.0f;
+                        scaleInput[2] = 1.0f;
                     }
                 }
                 ImGui::Separator();

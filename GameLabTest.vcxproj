@@ -168,7 +168,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.hpp" />
     <ClInclude Include="ElementArrayBuffer.h" />
-    <ClInclude Include="GLFWHandler.hpp" />
     <ClInclude Include="gltf.h" />
     <ClInclude Include="Libraries\include\glad\glad.h" />
     <ClInclude Include="Libraries\include\GLFW\glfw3.h" />
